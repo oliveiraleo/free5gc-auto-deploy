@@ -64,7 +64,7 @@ sudo sysctl -w net.ipv4.ip_forward=1 >/dev/null
 echo "[OK]"
 echo -n "[INFO] Stopping and disabling the ufw firewall... "
 sudo systemctl stop ufw
-sudo systemctl disable ufw >/dev/null
+sudo systemctl disable ufw >/dev/null 2>&1
 echo "[OK]"
 
 ########################
