@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-echo "Welcome to the fre5gc auto deploy script"
+echo "Welcome to the free5gc auto deploy script"
 
 sudo -v # caches credentials
 if [ $? == 1 ]
 then
-    echo "[INFO] Without root permission, you cannot change the hostname"
+    echo "[ERROR] Without root permission, you cannot change the hostname nor install packages"
     exit 1
 fi
 # Give some time for the user to abort before running
