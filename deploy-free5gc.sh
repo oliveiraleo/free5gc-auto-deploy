@@ -124,7 +124,6 @@ sed -i ""$SMF_LINE"s/.*/              - $IP/" ${CONFIG_FOLDER}smfcfg.yaml
 sed -i ""$UPF_LINE"s/.*/    - addr: $IP/" ${CONFIG_FOLDER}upfcfg.yaml
 
 echo "[INFO] Reboot the machine to apply the new hostname"
-echo "[INFO] Update the config files using the next script"
 echo "[INFO] Don't forget to configure UERANSIM's machine too"
 echo "[INFO] Auto deploy script done"
 
