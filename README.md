@@ -31,6 +31,15 @@ For more information see [this FAQ](./FAQ.md#q3-the-minimum-requirements-reporte
 
 - On 5GC machhine:
 
+Download the scripts
+
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/install-go.sh
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-free5gc.sh
+chmod +x auto-deploy-5gc.sh install-go.sh # gives execution permission
+```
+**Tip:** Use `-LOSs` instead of `-LO` to suppress curl's output messages (for more information see [this page](https://linux.die.net/man/1/curl))
+
 Install go and reload the environment vars
 
 ```
@@ -45,13 +54,21 @@ Then install free5gc
 
 - On UERANSIM machine:
 
+Download the script
+
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-UERANSIM.sh
+chmod +x deploy-UERANSIM.sh # gives execution permission
+```
+
+Then install UERANSIM
 ```
 ./deploy-UERANSIM.sh
 ```
 
 ## Contributing
 
-Contributions from the community are encouraged. If you saw any improvements that could be made or something that must be updated due to upstream changes, please, feel free to open an issue or a pull request
+Contributions from the community are encouraged. If you saw any improvements that could be made or something that must be updated due to upstream changes, please, feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or a [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
 
 All the contributions of source code to this repository are subject to its [license](./LICENSE). For more information see [here](https://www.gnu.org/licenses/gpl-3.0.en.html) and [here](https://choosealicense.com/licenses/gpl-3.0/).
 
