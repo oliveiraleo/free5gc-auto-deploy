@@ -1,8 +1,20 @@
 # free5GC-auto-deploy
 
+This repository contains scripts that help to deploy instances of the [free5gc](https://github.com/free5gc/free5gc) project.
+
 ## Motivation
 
-TBA
+In the course of my research, I've been utilizing the free5gc project. During the experimentation with this 5G Core (5GC) [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) and its associated Network Functions (NFs), I discovered an opportunity to streamline the installation process. By automating various installation tasks, I significantly reduced deployment time, optimizing efficiency and enabling a more agile research environment.
+
+During the process of seeking a similar tool, I've found 301 repositories hosted on Github that [had the word "free5gc" on them](https://github.com/search?q=free5gc+created%3A%3C2024-02-21&type=Repositories&ref=advsearch&l=&l=). As I took a deeper look, I noted that:
+- 23 (7.6%) were [related to Kubernetes](https://github.com/search?q=free5gc+k8s+OR+free5gc+microk8s+OR+free5gc+kubernetes+created%3A%3C2024-02-21+&type=repositories&ref=advsearch);
+- 27 (9.0%) were [related to docker but not to Kubernetes](https://github.com/search?q=free5gc+docker+NOT+%28kubernetes+OR+k8s+OR+microk8s+OR+powder%29+created%3A%3C2024-02-21&type=repositories&ref=advsearch);
+- 35 (11.6%) were [written in Shell Script](https://github.com/search?q=free5gc+language%3AShell&type=repositories&ref=advsearch);
+- Additional forms of automation (e.g. For [AWS environments](https://github.com/search?q=free5gc+aws+created%3A%3C2024-02-21&type=repositories&ref=advsearch)) were found too
+
+However the focus of my scripts were to (semi-)automatically deploy free5gc, and I couldn't find any projects that would fit this purpose.
+
+Entering into the spirit of FSFE's (FSF Europe) campaign ["Public Money? Public Code!"](https://fsfe.org/activities/publiccode/publiccode.en.html) and given that my research is currently being funded by public administration entities (namely [CAPES](https://www.gov.br/capes) and [RNP](https://www.rnp.br/en)) I decided to share my code with the community as it may help others in the future.
 
 ## Requirements
 
@@ -29,7 +41,7 @@ For more information see [this FAQ](./FAQ.md#q3-the-minimum-requirements-reporte
 
 ## Usage
 
-- On 5GC machhine:
+### On free5gc machine:
 
 Download the scripts
 
@@ -52,7 +64,7 @@ Then install free5gc
 ./deploy-free5gc.sh
 ```
 
-- On UERANSIM machine:
+### On UERANSIM machine:
 
 Download the script
 
