@@ -72,8 +72,10 @@ echo "[OK]"
 ########################
 echo "[INFO] Installing the 5GC"
 sleep 3
-git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+# git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
 cd free5gc
+git -c advice.detachedHead=false checkout 7d2d557 # commit with the webconsole build fix
 make # builds all the NFs
 cd ..
 

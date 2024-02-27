@@ -22,7 +22,9 @@ sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 ueransim/" /etc/hosts
 echo "[INFO] Downloading UERANSIM"
 git clone https://github.com/aligungr/UERANSIM
 cd UERANSIM
-git -c advice.detachedHead=false checkout 3a96298 # disables the "You are in 'detached HEAD' state" warning
+# "You are in 'detached HEAD' state" warning disabled
+# git -c advice.detachedHead=false checkout 3a96298
+git -c advice.detachedHead=false checkout e4c492d # commit with the new SUPI/IMSI fix
 
 ##########################
 # Install required tools #
