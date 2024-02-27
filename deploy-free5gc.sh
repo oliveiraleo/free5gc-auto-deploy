@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Welcome to the free5gc auto deploy script"
+echo "Welcome to the free5GC auto deploy script"
 
 sudo -v # caches credentials
 if [ $? == 1 ]
@@ -20,9 +20,9 @@ echo "[INFO] Exection started"
 
 # check your go installation
 go version
-echo "[INFO] Go should have been previously installed"
-echo "[INFO] If the message above shows an error, abort the execution"
-read -p "Press enter to continue or Ctrl+C to abort now"
+echo "[INFO] Go should have been previously installed, if not abort the execution"
+echo "[INFO] The message above must not show a \"command not found\" error"
+read -p "Press ENTER to continue or Ctrl+C to abort now"
 
 # Hostname update
 echo "[INFO] Updating the hostname"
@@ -68,7 +68,7 @@ sudo systemctl disable ufw >/dev/null 2>&1
 echo "[OK]"
 
 ########################
-# Install free5gc's CP #
+# Install free5GC's CP #
 ########################
 echo "[INFO] Installing the 5GC"
 sleep 3
