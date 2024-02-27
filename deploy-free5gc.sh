@@ -101,7 +101,7 @@ cd ..
 # Update the 5GC config files #
 ###############################
 echo "[INFO] Updating configuration files"
-ip address show $IFACENAME
+ip address show $IFACENAME | grep "\binet\b"
 # Reads the data network interface IP
 echo "Please, type the 5GC's DN interface IP address"
 echo -n "> "
