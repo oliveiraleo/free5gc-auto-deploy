@@ -75,7 +75,7 @@ sleep 3
 # git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
 git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
 cd free5gc
-git -c advice.detachedHead=false checkout 7d2d557 # commit with the webconsole build fix
+git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
 make # builds all the NFs
 cd ..
 
@@ -84,7 +84,7 @@ cd ..
 ########################################
 echo "[INFO] Installing the GTP kernel module"
 sleep 2
-git clone -b v0.8.5 https://github.com/free5gc/gtp5g.git
+git clone -c advice.detachedHead=false -b v0.8.5 https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make
 sudo make install
