@@ -57,6 +57,7 @@ read IFACENAME
 echo "[INFO] Using $IFACENAME as interface name"
 echo -n "[INFO] Applying iptables rules... "
 sudo iptables -t nat -A POSTROUTING -o $IFACENAME -j MASQUERADE
+sudo iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
 sudo iptables -I FORWARD 1 -j ACCEPT
 echo "[OK]"
 echo -n "[INFO] Setting kernel net.ipv4.ip_forward flag... "
