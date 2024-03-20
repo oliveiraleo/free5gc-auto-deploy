@@ -2,12 +2,39 @@
 
 echo "Welcome to the free5GC auto deploy script"
 
-sudo -v # caches credentials
-if [ $? == 1 ]
+sudo -v # cache credentials
+if [ $? == 1 ] # check if credentials were successfully cached
 then
     echo "[ERROR] Without root permission, you cannot change the hostname nor install packages"
     exit 1
 fi
+
+# Control variables (1 = true, 0 = false)
+CONTROL_STABLE=0 # switch between using the free5GC stable branch or latest nightly
+CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
+
+# check the number of parameters
+if [ $# -gt 2 ]; then
+    echo "[ERROR] Too many parameters given! Check your input and try again"
+    exit 2
+fi
+# check the parameters and set the control vars accordingly
+if [ $# -ne 0 ]; then
+    while [ $# -gt 0 ]; do
+        case $1 in
+            -stable)
+                CONTROL_STABLE=1
+                echo "STABLE"
+                ;;
+            -n3iwf)
+                CONTROL_N3IWF=1
+                echo "N3IWF"
+                ;;
+        esac
+        shift
+    done
+fi
+
 # Give some time for the user to abort before running
 echo "[INFO] The execution will start in 3 seconds!"
 echo -n "3 ... "
@@ -19,7 +46,7 @@ sleep 1
 echo "[INFO] Exection started"
 
 # check your go installation
-go version
+go version # TODO if go isn't installed kill the script automatically
 echo "[INFO] Go should have been previously installed, if not abort the execution"
 echo "[INFO] The message above must not show a \"command not found\" error"
 read -p "Press ENTER to continue or Ctrl+C to abort now"
@@ -76,12 +103,18 @@ echo "[OK]"
 ########################
 echo "[INFO] Installing the 5GC"
 sleep 3
-# git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-# git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
-cd free5gc
-# git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
-sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
+if [ $CONTROL_STABLE -eq 1 ]; then
+    # git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+    git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+    sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
+    cd free5gc
+elif [ $CONTROL_STABLE -eq 0 ]; then
+    git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
+    cd free5gc
+    git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
+else
+    echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+fi
 make # builds all the NFs
 cd ..
 
@@ -111,7 +144,7 @@ cd ..
 echo "[INFO] Updating configuration files"
 ip address show $IFACENAME | grep "\binet\b"
 # Reads the data network interface IP
-echo "Please, type the 5GC's DN interface IP address"
+echo "Please, type the 5GC's DN interface IP address" # TODO grab the IP automatically
 echo -n "> "
 read IP
 
