@@ -30,6 +30,9 @@ sudo sed -i "1s/.*/free5gc/" /etc/hostname
 HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
 sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 free5gc/" /etc/hosts
 
+echo "[INFO] Updating the package databse and installing system updates"
+sudo apt update && sudo apt upgrade -y
+
 # Install CP supporting packages
 echo "[INFO] Installing DB"
 sleep 2
@@ -74,9 +77,11 @@ echo "[OK]"
 echo "[INFO] Installing the 5GC"
 sleep 3
 # git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
+git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+# git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
 cd free5gc
-git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
+# git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
+sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
 make # builds all the NFs
 cd ..
 
