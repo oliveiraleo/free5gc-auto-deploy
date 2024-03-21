@@ -104,11 +104,16 @@ echo "[OK]"
 echo "[INFO] Installing the 5GC"
 sleep 3
 if [ $CONTROL_STABLE -eq 1 ]; then
+    echo "[INFO] Cloning free5GC stable branch"
     # git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
     git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-    sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
     cd free5gc
+    sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
+    # Useful script
+    echo "[INFO] Downloading reload_host_config script from source"
+    curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
 elif [ $CONTROL_STABLE -eq 0 ]; then
+    echo "[INFO] Cloning free5GC nightly branch"
     git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
     cd free5gc
     git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
@@ -163,6 +168,18 @@ UPF_LINE=$((UPF_LINE+1))
 sed -i ""$AMF_LINE"s/.*/    - $IP/" ${CONFIG_FOLDER}amfcfg.yaml
 sed -i ""$SMF_LINE"s/.*/              - $IP/" ${CONFIG_FOLDER}smfcfg.yaml
 sed -i ""$UPF_LINE"s/.*/    - addr: $IP/" ${CONFIG_FOLDER}upfcfg.yaml
+
+# N3IWF config
+if [ $CONTROL_STABLE -eq 1 ]; then
+    N3IWF_LINE=$(grep -n '# --- N2 Interfaces ---' ${CONFIG_FOLDER}n3iwfcfg.yaml | awk -F: '{print $1}' -)
+    N3IWF_LINE=$((N3IWF_LINE+3))
+    sed -i ""$N3IWF_LINE"s/.*/        -  $IP/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+    N3IWF_LINE=$((N3IWF_LINE+5))
+    sed -i ""$N3IWF_LINE"s/.*/  IKEBindAddress: $IP # Nwu interface  IP address (IKE) on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+    # TODO update NWu IPSecTunnel parameters too if LAN subnet of $IP is 10.0.0.x
+    echo "[INFO] N3IWF configuration applied"
+    echo "[WARN] Check the NWu IPSec parameters for conflicting IPs"
+fi
 
 echo "[INFO] Reboot the machine to apply the new hostname"
 if [ $CONTROL_STABLE -eq 1 ]; then
