@@ -23,8 +23,8 @@ echo "[INFO] Downloading UERANSIM"
 git clone https://github.com/aligungr/UERANSIM
 cd UERANSIM
 # "You are in 'detached HEAD' state" warning disabled
-# git -c advice.detachedHead=false checkout 3a96298
-git -c advice.detachedHead=false checkout e4c492d # commit with the new SUPI/IMSI fix
+git -c advice.detachedHead=false checkout 392b714 # last commit before new SUPI/IMSI fix one (useful to be used with free5GC v3.3.0)
+# git -c advice.detachedHead=false checkout e4c492d # commit with the new SUPI/IMSI fix (useful to be used with free5GC v3.4.0 or later)
 
 ##########################
 # Install required tools #
