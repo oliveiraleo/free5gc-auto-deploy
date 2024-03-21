@@ -24,11 +24,11 @@ if [ $# -ne 0 ]; then
         case $1 in
             -stable)
                 CONTROL_STABLE=1
-                echo "STABLE"
+                echo "[INFO] The stable branch will be cloned"
                 ;;
             -n3iwf)
                 CONTROL_N3IWF=1
-                echo "N3IWF"
+                echo "[INFO] N3IWF will be configured during the execution"
                 ;;
         esac
         shift
@@ -43,7 +43,7 @@ echo -n "2 ... "
 sleep 1
 echo "1 ..."
 sleep 1
-echo "[INFO] Exection started"
+echo "[INFO] Execution started"
 
 # check your go installation
 go version # TODO if go isn't installed kill the script automatically
@@ -57,7 +57,7 @@ sudo sed -i "1s/.*/free5gc/" /etc/hostname
 HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
 sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 free5gc/" /etc/hosts
 
-echo "[INFO] Updating the package databse and installing system updates"
+echo "[INFO] Updating the package database and installing system updates"
 sudo apt update && sudo apt upgrade -y
 
 # Install CP supporting packages
@@ -165,6 +165,10 @@ sed -i ""$SMF_LINE"s/.*/              - $IP/" ${CONFIG_FOLDER}smfcfg.yaml
 sed -i ""$UPF_LINE"s/.*/    - addr: $IP/" ${CONFIG_FOLDER}upfcfg.yaml
 
 echo "[INFO] Reboot the machine to apply the new hostname"
-echo "[INFO] Don't forget to configure UERANSIM's machine too"
+if [ $CONTROL_STABLE -eq 1 ]; then
+    echo "[INFO] Don't forget to configure UERANSIM using the stable flag too"
+elif [ $CONTROL_STABLE -eq 0 ]; then
+    echo "[INFO] Don't forget to configure UERANSIM's machine too"
+fi
 echo "[INFO] Auto deploy script done"
 
