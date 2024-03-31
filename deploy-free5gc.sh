@@ -85,7 +85,16 @@ echo -n "> "
 read IFACENAME
 
 echo "[INFO] Using $IFACENAME as interface name"
-echo -n "[INFO] Applying iptables rules... "
+echo -n "[INFO] Removing all iptables rules, if any... "
+sudo iptables -P INPUT ACCEPT
+sudo iptables -P FORWARD ACCEPT
+sudo iptables -P OUTPUT ACCEPT
+sudo iptables -t nat -F
+sudo iptables -t mangle -F
+sudo iptables -F
+sudo iptables -X
+echo "[OK]"
+echo -n "[INFO] Applying free5GC iptables rules... " # TODO clean the previous rules (see free5gc throubleshooting)
 sudo iptables -t nat -A POSTROUTING -o $IFACENAME -j MASQUERADE
 sudo iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
 sudo iptables -I FORWARD 1 -j ACCEPT
@@ -105,13 +114,16 @@ echo "[INFO] Installing the 5GC"
 sleep 3
 if [ $CONTROL_STABLE -eq 1 ]; then
     echo "[INFO] Cloning free5GC stable branch"
-    # git clone --recursive -b v3.4.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-    git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-    cd free5gc
-    sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
+    # v3.3.0
+    # git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+    # sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
     # Useful script
-    echo "[INFO] Downloading reload_host_config script from source"
-    curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
+    # echo "[INFO] Downloading reload_host_config script from source"
+    # curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
+    
+    # v3.4.1
+    git clone --recursive -b v3.4.1 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+    cd free5gc
 elif [ $CONTROL_STABLE -eq 0 ]; then
     echo "[INFO] Cloning free5GC nightly branch"
     git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
