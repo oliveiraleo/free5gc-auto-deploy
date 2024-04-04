@@ -10,7 +10,7 @@ then
 fi
 
 # Control variables (1 = true, 0 = false)
-CONTROL_STABLE=0 # switch between using the free5GC stable branch or latest nightly
+CONTROL_STABLE=1 # switch between using the free5GC stable branch or latest nightly
 CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
 FREE5GC_VERSION=v3.4.1 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
@@ -24,9 +24,9 @@ fi
 if [ $# -ne 0 ]; then
     while [ $# -gt 0 ]; do
         case $1 in
-            -stable)
-                CONTROL_STABLE=1
-                echo "[INFO] The stable branch will be cloned"
+            -nightly)
+                CONTROL_STABLE=0
+                echo "[INFO] The nightly branch will be cloned"
                 ;;
             -n3iwf)
                 CONTROL_N3IWF=1
@@ -151,7 +151,8 @@ cd ..
 # Install UPF / GTP-U 5G kernel module #
 ########################################
 echo "[INFO] Installing the GTP kernel module"
-sleep 2
+echo "[INFO] Removing GTP's previous versions, if any"
+rm -rf gtp5g #removes previous versions
 git clone -c advice.detachedHead=false -b v0.8.7 https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make

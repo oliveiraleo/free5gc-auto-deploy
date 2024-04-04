@@ -64,17 +64,19 @@ Then install free5gc
 ./deploy-free5gc.sh
 ```
 
+**Note:** By default, the script will install the stable version set by FREE5GC_VERSION variable and will **not** touch N3IWF configuration 
+
 #### Script parameters
 
 Currently, `deploy-free5gc.sh` script accepts two parameters:
 
-- `-stable`: Clones free5GC stable (v3.3.0) version instead of the nightly one
+- `-nightly`: Clones free5GC nightly version set by FREE5GC_NIGHTLY_COMMIT variable instead of the stable one
 - `-n3iwf`: Prepares the configuration file of the N3IWF during the installation
 
 Example usage:
 
 ```
-./deploy-free5gc.sh -stable -n3iwf
+./deploy-free5gc.sh -nightly -n3iwf
 ```
 
 ### On UERANSIM machine:
