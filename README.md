@@ -2,6 +2,8 @@
 
 This repository contains scripts that help to deploy instances of the [free5GC](https://github.com/free5gc/free5gc) project.
 
+If you are new to free5GC, it is recommended to first be acquainted with its documentation available on [its official website](https://free5gc.org/guide/). As these scripts try to reproduce the steps of the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) present there automatically, however it is important to learn the details behind them.
+
 ## Motivation
 
 In the course of my research, I've been utilizing the free5GC project. During the experimentation with this 5G Core (5GC) [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) and its associated Network Functions (NFs), I discovered an opportunity to streamline the installation process. By automating various installation tasks, I significantly reduced deployment time, optimizing efficiency and enabling a more agile research environment.
@@ -14,7 +16,7 @@ During the process of seeking a similar tool, I've found 301 repositories hosted
 
 However the focus of my scripts were to (semi-)automatically deploy free5GC, and I couldn't find any projects that would fit this purpose.
 
-Entering into the spirit of FSFE's (FSF Europe) campaign ["Public Money? Public Code!"](https://fsfe.org/activities/publiccode/publiccode.en.html) and given that my research is currently being funded by public administration entities (namely [CAPES](https://www.gov.br/capes) and [RNP](https://www.rnp.br/en)) I decided to share my code with the community as it may help others in the future.
+Entering into the spirit of FSFE's ([FSF](https://www.fsf.org/) Europe) campaign ["Public Money? Public Code!"](https://fsfe.org/activities/publiccode/publiccode.en.html) and given that my research is currently being funded by public administration entities (namely [CAPES](https://www.gov.br/capes) and [RNP](https://www.rnp.br/en)) I decided to share my code with the community as it may help others in the future.
 
 ## Requirements
 
