@@ -12,6 +12,8 @@ fi
 # Control variables (1 = true, 0 = false)
 CONTROL_STABLE=0 # switch between using the free5GC stable branch or latest nightly
 CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
+FREE5GC_VERSION=v3.4.1 # select the stable branch tag that will be used by the script
+FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
 
 # check the number of parameters
 if [ $# -gt 2 ]; then
@@ -114,21 +116,31 @@ echo "[INFO] Installing the 5GC"
 sleep 3
 if [ $CONTROL_STABLE -eq 1 ]; then
     echo "[INFO] Cloning free5GC stable branch"
-    # v3.3.0
-    # git clone --recursive -b v3.3.0 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-    # sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
-    # Useful script
-    # echo "[INFO] Downloading reload_host_config script from source"
-    # curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
+    echo "[INFO] Tag/release: $FREE5GC_VERSION"
+    if [[ $FREE5GC_VERSION = "v3.3.0" ]]; then
+        echo "[WARN] Using an older release should be avoided"
+        # v3.3.0
+        git clone -c advice.detachedHead=false --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the previous stable build
+        cd free5gc
+        sudo corepack enable # necessary to build webconsole on free5GC v3.3.0
+        # Useful script
+        echo "[INFO] Downloading reload_host_config script from source"
+        curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
     
-    # v3.4.1
-    git clone --recursive -b v3.4.1 -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
-    cd free5gc
+    elif [[ $FREE5GC_VERSION = "v3.4.1" ]]; then
+        # v3.4.1
+        git clone --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+        cd free5gc
+    else
+        echo "[ERROR] Script failed to set FREE5GC_VERSION variable" #check your spelling, you must keep the "v" (e.g. v.3.4.1)
+    fi
 elif [ $CONTROL_STABLE -eq 0 ]; then
     echo "[INFO] Cloning free5GC nightly branch"
+    echo "[INFO] Commit: $FREE5GC_NIGHTLY_COMMIT"
+    echo "[WARN] Unless you know what you are doing, using the nightly branch should be avoided"
     git clone --recursive -j `nproc` https://github.com/free5gc/free5gc.git # clones the nightly build
     cd free5gc
-    git -c advice.detachedHead=false checkout 8bfdd81 # commit with the webconsole build and kill script fixes (among other updates)
+    git -c advice.detachedHead=false checkout $FREE5GC_NIGHTLY_COMMIT # commit with the webconsole build and kill script fixes (among other updates)
 else
     echo "[ERROR] Script failed to set CONTROL_STABLE variable"
 fi
@@ -140,7 +152,7 @@ cd ..
 ########################################
 echo "[INFO] Installing the GTP kernel module"
 sleep 2
-git clone -c advice.detachedHead=false -b v0.8.5 https://github.com/free5gc/gtp5g.git
+git clone -c advice.detachedHead=false -b v0.8.7 https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make
 sudo make install
@@ -182,7 +194,7 @@ sed -i ""$SMF_LINE"s/.*/              - $IP/" ${CONFIG_FOLDER}smfcfg.yaml
 sed -i ""$UPF_LINE"s/.*/    - addr: $IP/" ${CONFIG_FOLDER}upfcfg.yaml
 
 # N3IWF config
-if [ $CONTROL_STABLE -eq 1 ]; then
+if [ $CONTROL_N3IWF -eq 1 ]; then
     N3IWF_LINE=$(grep -n '# --- N2 Interfaces ---' ${CONFIG_FOLDER}n3iwfcfg.yaml | awk -F: '{print $1}' -)
     N3IWF_LINE=$((N3IWF_LINE+3))
     sed -i ""$N3IWF_LINE"s/.*/        -  $IP/" ${CONFIG_FOLDER}n3iwfcfg.yaml
