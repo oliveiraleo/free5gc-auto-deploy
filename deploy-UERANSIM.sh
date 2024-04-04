@@ -8,7 +8,44 @@ then
     echo "[ERROR] Without root permission, you cannot install the tools and the updates"
     exit 1
 fi
-echo "[INFO] Exection started"
+echo "[INFO] Execution started"
+
+# Control variables (1 = true, 0 = false)
+CONTROL_STABLE=0 # switch between using the free5GC stable branch or latest nightly
+UERANSIM_VERSION=v3.2.6 # select the stable branch tag that will be used by the script
+UERANSIM_NIGHTLY_COMMIT='' # to be used to select which commit hash will be used by the script
+
+# check the number of parameters
+if [ $# -gt 1 ]; then
+    echo "[ERROR] Too many parameters given! Check your input and try again"
+    exit 2
+fi
+if [ $# -lt 1 ]; then
+    echo "[ERROR] No parameter was given! Check your input and try again"
+    exit 2
+fi
+# check the parameters and set the control vars accordingly
+if [ $# -ne 0 ]; then
+    while [ $# -gt 0 ]; do
+        case $1 in
+            -stable)
+                CONTROL_STABLE=1
+                echo "[INFO] The stable branch will be cloned"
+                ;;
+            -nightly33)
+                CONTROL_STABLE=0
+                UERANSIM_NIGHTLY_COMMIT=392b714 # last commit before new SUPI/IMSI fix one (useful to be used with free5GC v3.3.0)
+                echo "[INFO] The nightly branch to be used with free5GC v3.3.0 or below will be cloned"
+                ;;
+            -nightly)
+                CONTROL_STABLE=0
+                UERANSIM_NIGHTLY_COMMIT=e4c492d # commit with the new SUPI/IMSI fix (useful to be used with free5GC v3.4.0 or later)
+                echo "[INFO] The nightly branch to be used with free5GC v3.4.0 or later will be cloned"
+                ;;
+        esac
+        shift
+    done
+fi
 
 # Hostname update
 echo "[INFO] Updating the hostname"
@@ -20,11 +57,26 @@ sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 ueransim/" /etc/hosts
 # Download UERANSIM #
 #####################
 echo "[INFO] Downloading UERANSIM"
-git clone https://github.com/aligungr/UERANSIM
-cd UERANSIM
-# "You are in 'detached HEAD' state" warning disabled
-git -c advice.detachedHead=false checkout 392b714 # last commit before new SUPI/IMSI fix one (useful to be used with free5GC v3.3.0)
-# git -c advice.detachedHead=false checkout e4c492d # commit with the new SUPI/IMSI fix (useful to be used with free5GC v3.4.0 or later)
+if [ $CONTROL_STABLE -eq 1 ]; then
+    echo "[INFO] Cloning UERANSIM stable branch"
+    echo "[INFO] Tag/release: $UERANSIM_VERSION"
+    git clone -c advice.detachedHead=false -b $UERANSIM_VERSION https://github.com/aligungr/UERANSIM # clones the stable build
+    cd UERANSIM
+elif [ $CONTROL_STABLE -eq 0 ]; then
+    # first check if commit was correctly set 
+    if [ -z "$UERANSIM_NIGHTLY_COMMIT" ]; then
+        echo "[ERROR] Script failed to set UERANSIM_NIGHTLY_COMMIT variable"
+        exit 1
+    fi
+    echo "[INFO] Cloning UERANSIM nightly branch"
+    echo "[INFO] Commit: $UERANSIM_NIGHTLY_COMMIT"
+    git clone https://github.com/aligungr/UERANSIM
+    cd UERANSIM
+    git -c advice.detachedHead=false checkout $UERANSIM_NIGHTLY_COMMIT # clones the nightly build
+else
+    echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+    exit 1
+fi
 
 ##########################
 # Install required tools #

@@ -90,7 +90,39 @@ chmod +x deploy-UERANSIM.sh # gives execution permission
 
 Then install UERANSIM
 ```
-./deploy-UERANSIM.sh
+./deploy-UERANSIM.sh -stable
+```
+
+#### Script parameters
+
+Currently, `deploy-UERANSIM.sh` script accepts three parameters:
+
+- `-stable`: Clones UERANSIM stable version
+- `-nightly33`: Clones UERANSIM nightly version compatible with free5GC v3.3.0 or below
+- `-nightly`: Clones UERANSIM nightly version compatible with free5GC v3.4.0 or above
+
+Example usage:
+
+```
+./deploy-free5gc.sh -nightly
+```
+
+**Note:** This script requires a parameter to work, just pick one from the list above that suit your environment
+
+#### UERANSIM usage
+
+To deploy the gNB:
+
+```
+cd ~/UERANSIM
+build/nr-gnb -c config/free5gc-gnb.yaml
+```
+
+To deploy the UE:
+
+```
+cd ~/UERANSIM
+sudo build/nr-ue -c config/free5gc-ue.yaml # for multiple-UEs, use -n and -t for number and delay
 ```
 
 ## Contributing
