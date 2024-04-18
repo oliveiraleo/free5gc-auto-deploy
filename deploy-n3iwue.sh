@@ -28,6 +28,7 @@ sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 n3iwue/" /etc/hosts
 echo "[INFO] Downloading N3IWUE"
 git clone -c advice.detachedHead=false -b v1.0.0 https://github.com/free5gc/n3iwue.git # downloads the stable version
 cd n3iwue
+# TODO add a way to clone the nigthly version too
 
 ##########################
 # Install required tools #
@@ -62,14 +63,21 @@ echo ""
 echo "Please, now enter the N3IWUE's Nwu interface IP address (e.g. IP that communicates with 5GC)"
 echo -n "> "
 read IP_UE
+# Reads the N3IWUE DN interface IP
+echo "Please, now enter the N3IWUE's DN interface IP address (e.g. IP that N3WIUE will get from the 5GC)"
+echo "TIP: If deploying only one N3IWUE to connect to the 5GC and unsure, then the IP should be 10.60.0.1"
+echo -n "> "
+read IP_DN_UE
 
 echo "[INFO] Updating configuration files"
 
 CONFIG_FOLDER="./n3iwue/config/"
+BASE_FOLDER="./n3iwue/"
 
 # The var below aim to find the correct line to replace the IP address
 N3IWF_LINE=$(grep -n 'N3IWFInformation:' ${CONFIG_FOLDER}n3ue.yaml | awk -F: '{print $1}' -)
 N3UE_LINE=$(grep -n 'IPSecIfaceName: ens38 # Name of Nwu interface (IKE) on this N3UE' ${CONFIG_FOLDER}n3ue.yaml | awk -F: '{print $1}' -)
+N3UE_RUN_SCRIPT_LINE=$(grep -n 'N3UE_IPSec_iface_addr=' ${BASE_FOLDER}run.sh | awk -F: '{print $1}' -)
 
 # Increment the counter to point to the next line (where the IP is located)
 N3IWF_LINE=$((N3IWF_LINE+1))
@@ -79,6 +87,12 @@ sed -i ""$N3IWF_LINE"s/.*/        IPSecIfaceAddr: $IP_5GC # IP address of Nwu in
 sed -i ""$N3UE_LINE"s/.*/        IPSecIfaceName: $IFACENAME # Name of Nwu interface (IKE) on this N3UE/" ${CONFIG_FOLDER}n3ue.yaml
 N3UE_LINE=$((N3UE_LINE+1)) # go to the next line
 sed -i ""$N3UE_LINE"s/.*/        IPSecIfaceAddr: $IP_UE # IP address of Nwu interface (IKE) on this N3UE/" ${CONFIG_FOLDER}n3ue.yaml
+
+sed -i ""$N3UE_RUN_SCRIPT_LINE"s/.*/    N3UE_IPSec_iface_addr=$IP_5GC/" ${BASE_FOLDER}run.sh
+N3UE_RUN_SCRIPT_LINE=$((N3UE_RUN_SCRIPT_LINE+1)) # go to the next line
+# sed -i ""$N3UE_RUN_SCRIPT_LINE"s/.*/    N3IWF_IPsec_inner_addr=$TODO/" ${BASE_FOLDER}run.sh # TODO update inner IP here
+N3UE_RUN_SCRIPT_LINE=$((N3UE_RUN_SCRIPT_LINE+1)) # go to the next line
+sed -i ""$N3UE_RUN_SCRIPT_LINE"s/.*/    UE_DN_addr=$IP_DN_UE/" ${BASE_FOLDER}run.sh
 
 # TODO update IPsecInnerAddr too
 
