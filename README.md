@@ -2,7 +2,7 @@
 
 This repository contains scripts that help to deploy instances of the [free5GC](https://github.com/free5gc/free5gc) project.
 
-If you are new to free5GC, it is recommended to first be acquainted with its documentation available on [its official website](https://free5gc.org/guide/). As these scripts try to reproduce the steps of the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) present there automatically, however it is important to learn the details behind them.
+If you are new to free5GC, it is recommended to first be acquainted with its documentation available on [its official website](https://free5gc.org/guide/). As these scripts try to reproduce the steps of the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) present there automatically,  it is important to learn the details behind them.
 
 ## Motivation
 
@@ -126,6 +126,20 @@ To deploy the UE:
 cd ~/UERANSIM
 sudo build/nr-ue -c config/free5gc-ue.yaml # for multiple-UEs, use -n and -t for number and delay
 ```
+
+### On N3IWUE machine:
+
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/install-go.sh
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-n3iwue.sh
+chmod +x deploy-n3iwue.sh install-go.sh # gives execution permission
+```
+
+### How to deploy both UERANSIM and N3IWUE
+
+This is a planned feature to be available in the future
+
+**Tip:** Currently it's possible to have the same functionality by running both UERANSIM and N3IWUE scripts on the same machine
 
 ## Contributing
 
