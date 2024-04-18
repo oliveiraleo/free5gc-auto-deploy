@@ -87,6 +87,12 @@ echo -n "> "
 read IFACENAME
 
 echo "[INFO] Using $IFACENAME as interface name"
+
+# warn the user before deleting the rules
+# TODO Add a parameter to trigger this deletion
+echo "[WARN] Firewall reset: ALL iptables rules will be DELETED now"
+read -p "Press ENTER to continue or Ctrl+C to abort now"
+# start to delete old rules
 echo -n "[INFO] Removing all iptables rules, if any... "
 sudo iptables -P INPUT ACCEPT
 sudo iptables -P FORWARD ACCEPT
@@ -96,7 +102,7 @@ sudo iptables -t mangle -F
 sudo iptables -F
 sudo iptables -X
 echo "[OK]"
-echo -n "[INFO] Applying free5GC iptables rules... " # TODO clean the previous rules (see free5gc throubleshooting)
+echo -n "[INFO] Applying free5GC iptables rules... "
 sudo iptables -t nat -A POSTROUTING -o $IFACENAME -j MASQUERADE
 sudo iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400
 sudo iptables -I FORWARD 1 -j ACCEPT
