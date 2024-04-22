@@ -117,13 +117,11 @@ sed -i ""$N3UE_LINE"s/.*/        IPSecIfaceAddr: $IP_UE # IP address of Nwu inte
 # Update the IP on the run script file
 sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    N3UE_IPSec_iface_addr=$IP_5GC/" ${BASE_FOLDER}run.sh
 N3UE_RUN_SCRIPT_IPSEC_LINE=$((N3UE_RUN_SCRIPT_IPSEC_LINE+1)) # go to the next line
-sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    N3IWF_IPsec_inner_addr=$IP_IPSEC_INNER/" ${BASE_FOLDER}run.sh # TODO check if it works
+sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    N3IWF_IPsec_inner_addr=$IP_IPSEC_INNER/" ${BASE_FOLDER}run.sh
 N3UE_RUN_SCRIPT_IPSEC_LINE=$((N3UE_RUN_SCRIPT_IPSEC_LINE+1)) # go to the next line
 sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    UE_DN_addr=$IP_DN_UE/" ${BASE_FOLDER}run.sh
 
 echo "[INFO] Reboot the machine to apply the new hostname"
 echo "[INFO] Don't forget to add the N3IWUE to free5GC via WebConsole"
 echo "[INFO] See: https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue"
-# echo "[WARN] Don't forget to adjust the IPs on run.sh scritpt to capture pacts correctly on the .pcap"
-# echo "[INFO] The warning above only applies if you want to use N3IWUE's packet dump embedded functionality"
 echo "[INFO] Auto deploy script done"

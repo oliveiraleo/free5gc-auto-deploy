@@ -241,9 +241,9 @@ fi
 
 echo "[INFO] Reboot the machine to apply the new hostname"
 if [ $CONTROL_STABLE -eq 1 ]; then
-    echo "[INFO] Don't forget to configure UERANSIM using the stable flag too"
+    echo "[INFO] Don't forget to configure UERANSIM using the stable flag"
 elif [ $CONTROL_STABLE -eq 0 ]; then
-    echo "[INFO] Don't forget to configure UERANSIM's machine too"
+    echo "[INFO] Don't forget to configure UERANSIM using the nightly flag"
 fi
 echo "[INFO] Auto deploy script done"
 
