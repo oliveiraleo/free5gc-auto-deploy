@@ -184,6 +184,30 @@ echo "Please, type the 5GC's DN interface IP address" # TODO grab the IP automat
 echo -n "> "
 read IP
 
+# Prepare the N3IWF IPSec inner tunnel IP address
+if [ $CONTROL_N3IWF -eq 1 ]; then
+    # Get the first octet of the free5GC machine IP
+    IP_FIRST_OCTET=${IP%%.*}
+    echo "[DEBUG] free5GC machine DN interface IP 1st octet: $IP_FIRST_OCTET"
+
+    IP_IPSEC_INNER="10.0.0.1" # default IP is 10.0.0.1 (Check it here: https://github.com/free5gc/free5gc/blob/main/config/n3iwfcfg.yaml#L36)
+    IP_IPSEC_INNER_NET_ADDR="10.0.0.0/24"
+
+    # If the UE IP belongs to the 10.x.x.x range, it will conflict with the IPSec tunnel address that will be added as the default route
+    if [ ${IP_FIRST_OCTET} -eq 10 ]; then
+        echo "[WARN] A conflicting IP address range for Nwu interface was detected"
+        echo "[INFO] Using 172.16.x.x as IPSec tunnel address space instead of 10.x.x.x"
+
+        IP_IPSEC_INNER="172.16.0.1" # update the IP address
+
+        IP_NET_OCTETS=`echo "$IP_IPSEC_INNER" | cut -d . -f 1-3`
+        IP_IPSEC_INNER_NET_ADDR="$IP_NET_OCTETS"".0/24" # update the network address
+
+        echo "[DEBUG] New IPSec tunnel inner IP address: $IP_IPSEC_INNER"
+        echo "[DEBUG] New IPSec tunnel IP addresses pool: $IP_IPSEC_INNER_NET_ADDR"
+    fi
+fi
+
 CONFIG_FOLDER="./free5gc/config/"
 
 # The vars below aim to find the correct line to replace the IP address. The commands get the line right above the one where the IP must be changed
@@ -207,9 +231,12 @@ if [ $CONTROL_N3IWF -eq 1 ]; then
     sed -i ""$N3IWF_LINE"s/.*/        -  $IP/" ${CONFIG_FOLDER}n3iwfcfg.yaml
     N3IWF_LINE=$((N3IWF_LINE+5))
     sed -i ""$N3IWF_LINE"s/.*/  IKEBindAddress: $IP # Nwu interface  IP address (IKE) on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
-    # TODO update NWu IPSecTunnel parameters too if LAN subnet of $IP is 10.0.0.x
+    N3IWF_LINE=$((N3IWF_LINE+1))
+    sed -i ""$N3IWF_LINE"s/.*/  IPSecTunnelAddress: $IP_IPSEC_INNER # Tunnel IP address of XFRM interface on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+    N3IWF_LINE=$((N3IWF_LINE+1))
+    # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
+    sed -i ""$N3IWF_LINE"s@.*@  UEIPAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address pool allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}n3iwfcfg.yaml
     echo "[INFO] N3IWF configuration applied"
-    echo "[WARN] Check the NWu IPSec parameters for conflicting IPs"
 fi
 
 echo "[INFO] Reboot the machine to apply the new hostname"
