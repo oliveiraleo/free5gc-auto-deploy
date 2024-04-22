@@ -205,6 +205,8 @@ if [ $CONTROL_N3IWF -eq 1 ]; then
 
         echo "[DEBUG] New IPSec tunnel inner IP address: $IP_IPSEC_INNER"
         echo "[DEBUG] New IPSec tunnel IP addresses pool: $IP_IPSEC_INNER_NET_ADDR"
+    else
+        echo "[DEBUG] No conflicting IP address found"
     fi
 fi
 
