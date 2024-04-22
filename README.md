@@ -111,7 +111,7 @@ Example usage:
 
 **Note:** This script requires a parameter to work, just pick one from the list above that suit your environment
 
-#### UERANSIM usage
+#### UERANSIM basic usage
 
 To deploy the gNB:
 
@@ -134,6 +134,19 @@ curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/install-go.
 curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-n3iwue.sh
 chmod +x deploy-n3iwue.sh install-go.sh # gives execution permission
 ```
+
+Install go and reload the environment vars
+
+```
+./install-go.sh && source ~/.bashrc
+```
+
+Then install N3IWUE
+```
+./deploy-n3iwue.sh
+```
+
+**Note:** Currently the script will install the v1.0.0 stable branch
 
 ### How to deploy both UERANSIM and N3IWUE
 
