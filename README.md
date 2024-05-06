@@ -1,8 +1,8 @@
 # free5GC-auto-deploy
 
-This repository contains scripts that help to deploy instances of the [free5GC](https://github.com/free5gc/free5gc) project.
+This repository comprises a collection of scripts designed to facilitate the deployment of instances of the [free5GC](https://github.com/free5gc/free5gc) project.
 
-If you are new to free5GC, it is recommended to first be acquainted with its documentation available on [its official website](https://free5gc.org/guide/). As these scripts try to reproduce the steps of the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) present there automatically,  it is important to learn the details behind them.
+The comprehensive documentation available on the [project's official website](https://free5gc.org/guide/) is highly advisable for individuals new to free5GC to familiarize themselves with. The underlying processes are to be carefully studied, as the scripts are designed to replicate the steps outlined in the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) guide in an automated manner.
 
 ## Motivation
 
@@ -20,7 +20,7 @@ Entering into the spirit of FSFE's ([FSF](https://www.fsf.org/) Europe) campaign
 
 ## Requirements
 
-Those are the characteristics of the environment where the scripts were tested
+The scripts were tested within an environment that possessed the following characteristics:
 
 ### Software
 
@@ -66,7 +66,7 @@ Then install free5gc
 ./deploy-free5gc.sh
 ```
 
-**Note:** By default, the script will install the stable version set by FREE5GC_VERSION variable and will **not** touch N3IWF configuration 
+**Note:** Unless otherwise specified, the script will automatically install the stable version defined by the FREE5GC_VERSION variable, without making any changes to the N3IWF configuration
 
 #### Script parameters
 
@@ -106,10 +106,10 @@ Currently, `deploy-UERANSIM.sh` script accepts three parameters:
 Example usage:
 
 ```
-./deploy-free5gc.sh -nightly
+./deploy-UERANSIM.sh -nightly
 ```
 
-**Note:** This script requires a parameter to work, just pick one from the list above that suit your environment
+**Note:** This script requires a parameter to work. Please select one from the list provided above that is compatible with your environment
 
 #### UERANSIM basic usage
 
@@ -156,9 +156,9 @@ This is a planned feature to be available in the future
 
 ## Contributing
 
-Contributions from the community are encouraged. If you saw any improvements that could be made or something that must be updated due to upstream changes, please, feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or a [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
+The community is encouraged to contribute to this project. If you identify any opportunities for improvement or areas that require updates due to upstream changes, please feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
 
-All the contributions of source code to this repository are subject to its [license](./LICENSE). For more information see [here](https://www.gnu.org/licenses/gpl-3.0.en.html) and [here](https://choosealicense.com/licenses/gpl-3.0/).
+All contributions to this repository are subject to its [licensing terms](./LICENSE). For more information, please see [here](https://www.gnu.org/licenses/gpl-3.0.en.html) and [here](https://choosealicense.com/licenses/gpl-3.0/).
 
 ## License
 
