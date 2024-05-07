@@ -11,12 +11,13 @@ fi
 echo "[INFO] Execution started"
 
 # Control variables (1 = true, 0 = false)
+CONTROL_HOSTNAME=1 # switch between updating of not the hostname
 CONTROL_STABLE=0 # switch between using the free5GC stable branch or latest nightly
 UERANSIM_VERSION=v3.2.6 # select the stable branch tag that will be used by the script
 UERANSIM_NIGHTLY_COMMIT='' # to be used to select which commit hash will be used by the script
 
 # check the number of parameters
-if [ $# -gt 1 ]; then
+if [ $# -gt 2 ]; then
     echo "[ERROR] Too many parameters given! Check your input and try again"
     exit 2
 fi
@@ -42,16 +43,26 @@ if [ $# -ne 0 ]; then
                 UERANSIM_NIGHTLY_COMMIT=e4c492d # commit with the new SUPI/IMSI fix (useful to be used with free5GC v3.4.0 or later)
                 echo "[INFO] The nightly branch to be used with free5GC v3.4.0 or later will be cloned"
                 ;;
+            -keep-hostname)
+                echo "[INFO] The script will not change the machine's hostname"
+                CONTROL_HOSTNAME=0
         esac
         shift
     done
 fi
 
 # Hostname update
-echo "[INFO] Updating the hostname"
-sudo sed -i "1s/.*/ueransim/" /etc/hostname
-HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
-sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 ueransim/" /etc/hosts
+if [ $CONTROL_HOSTNAME -eq 1 ]; then
+    echo "[INFO] Updating the hostname"
+    sudo sed -i "1s/.*/ueransim/" /etc/hostname
+    HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
+    sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 ueransim/" /etc/hosts
+elif [ $CONTROL_HOSTNAME -eq 0 ]; then
+    echo "[INFO] Hostname update skipped this time"
+else
+    echo "[ERROR] Script failed to set CONTROL_HOSTNAME variable"
+    exit 1
+fi
 
 #####################
 # Download UERANSIM #

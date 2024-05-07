@@ -10,6 +10,31 @@ then
 fi
 echo "[INFO] Execution started"
 
+# Control variables (1 = true, 0 = false)
+CONTROL_HOSTNAME=1 # switch between updating of not the hostname
+
+# check the number of parameters
+if [ $# -gt 1 ]; then
+    echo "[ERROR] Too many parameters given! Check your input and try again"
+    exit 2
+fi
+# if [ $# -lt 1 ]; then
+#     echo "[ERROR] No parameter was given! Check your input and try again"
+#     exit 2
+# fi
+# check the parameters and set the control vars accordingly
+# NOTE this part was reused because in the future the script may support more parameters
+if [ $# -ne 0 ]; then
+    while [ $# -gt 0 ]; do
+        case $1 in
+            -keep-hostname)
+                echo "[INFO] The script will not change the machine's hostname"
+                CONTROL_HOSTNAME=0
+        esac
+        shift
+    done
+fi
+
 # check your go installation
 go version
 echo "[INFO] Go should have been previously installed, if not abort the execution"
@@ -17,10 +42,17 @@ echo "[INFO] The message above must not show a \"command not found\" error"
 read -p "Press ENTER to continue or Ctrl+C to abort now"
 
 # Hostname update
-echo "[INFO] Updating the hostname"
-sudo sed -i "1s/.*/n3iwue/" /etc/hostname
-HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
-sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 n3iwue/" /etc/hosts
+if [ $CONTROL_HOSTNAME -eq 1 ]; then
+    echo "[INFO] Updating the hostname"
+    sudo sed -i "1s/.*/n3iwue/" /etc/hostname
+    HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
+    sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 n3iwue/" /etc/hosts
+elif [ $CONTROL_HOSTNAME -eq 0 ]; then
+    echo "[INFO] Hostname update skipped this time"
+else
+    echo "[ERROR] Script failed to set CONTROL_HOSTNAME variable"
+    exit 1
+fi
 
 ###################
 # Download N3IWUE #
