@@ -131,7 +131,9 @@ GNB_LINE=$((GNB_LINE+1)) # go to the next line
 sed -i ""$GNB_LINE"s/.*/gtpIp: $IP_UE   # gNB's local IP address for N3 Interface (Usually same with local IP)/" ${CONFIG_FOLDER}free5gc-gnb.yaml
 sed -i ""$GNB_LINE_AMF"s/.*/  - address: $IP_5GC/" ${CONFIG_FOLDER}free5gc-gnb.yaml
 
-echo "[INFO] Reboot the machine to apply the new hostname"
+if [ $CONTROL_HOSTNAME -eq 1 ]; then
+    echo "[INFO] Reboot the machine to apply the new hostname"
+fi
 echo "[INFO] Don't forget to add the UE to the free5gc via WebConsole"
 echo "[INFO] See: https://free5gc.org/guide/5-install-ueransim/#4-use-webconsole-to-add-an-ue"
 echo "[INFO] Auto deploy script done"

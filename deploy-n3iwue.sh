@@ -153,7 +153,9 @@ sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    N3IWF_IPsec_inner_addr=$IP_IPSEC_I
 N3UE_RUN_SCRIPT_IPSEC_LINE=$((N3UE_RUN_SCRIPT_IPSEC_LINE+1)) # go to the next line
 sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    UE_DN_addr=$IP_DN_UE/" ${BASE_FOLDER}run.sh
 
-echo "[INFO] Reboot the machine to apply the new hostname"
+if [ $CONTROL_HOSTNAME -eq 1 ]; then
+    echo "[INFO] Reboot the machine to apply the new hostname"
+fi
 echo "[INFO] Don't forget to add the N3IWUE to free5GC via WebConsole"
 echo "[INFO] See: https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue"
 echo "[INFO] Auto deploy script done"
