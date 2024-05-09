@@ -32,6 +32,10 @@ if [ $# -ne 0 ]; then
                 CONTROL_N3IWF=1
                 echo "[INFO] N3IWF will be configured during the execution"
                 ;;
+            *)
+                echo "[ERROR] Some input parameter wasn't found. Check your input and try again"
+                exit 1
+                ;;
         esac
         shift
     done
@@ -159,7 +163,7 @@ cd ..
 echo "[INFO] Installing the GTP kernel module"
 echo "[INFO] Removing GTP's previous versions, if any"
 rm -rf gtp5g #removes previous versions
-git clone -c advice.detachedHead=false -b v0.8.7 https://github.com/free5gc/gtp5g.git
+git clone -c advice.detachedHead=false -b v0.8.9 https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make
 sudo make install
