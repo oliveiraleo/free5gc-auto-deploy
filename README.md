@@ -54,7 +54,7 @@ chmod +x deploy-free5gc.sh install-go.sh # gives execution permission
 ```
 **Tip:** Use `-LOSs` instead of `-LO` to suppress curl's output messages (for more information see [this page](https://linux.die.net/man/1/curl))
 
-Install go and reload the environment vars
+Install Go and reload the environment vars
 
 ```
 ./install-go.sh && source ~/.bashrc
@@ -133,13 +133,15 @@ sudo build/nr-ue -c config/free5gc-ue.yaml # for multiple-UEs, use -n and -t for
 
 ### On N3IWUE machine:
 
+Download the scripts
+
 ```
 curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/install-go.sh
 curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-n3iwue.sh
 chmod +x deploy-n3iwue.sh install-go.sh # gives execution permission
 ```
 
-Install go and reload the environment vars
+Install Go and reload the environment vars
 
 ```
 ./install-go.sh && source ~/.bashrc
@@ -158,9 +160,19 @@ Please, follow the instructions from [this page here](https://free5gc.org/guide/
 
 ### How to deploy both UERANSIM and N3IWUE
 
-This is a planned feature to be available in the future
+On a new machine, download the script
 
-**Tip:** Currently it's possible to have the same functionality by running both UERANSIM and N3IWUE scripts on the same machine
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-both-UEs.sh
+```
+
+Then execute it using an interactive shell
+
+```
+bash -i deploy-both-UEs.sh
+```
+
+**Note:** By default shells invoked by a script are non-interactive, running this script in a non-interactive shell will cause the bash environment variable reload after Go installation to fail. For more information see [this page](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Interactive-Shells)
 
 ## Contributing
 
