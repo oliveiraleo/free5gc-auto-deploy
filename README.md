@@ -111,6 +111,10 @@ Example usage:
 
 **Note:** This script requires a parameter to work. Please select one from the list provided above that is compatible with your environment
 
+#### Add new 5G UE to free5GC
+
+Please, follow the instructions from [this page here](https://free5gc.org/guide/5-install-ueransim/#4-use-webconsole-to-add-an-ue)
+
 #### UERANSIM basic usage
 
 To deploy the gNB:
@@ -147,6 +151,10 @@ Then install N3IWUE
 ```
 
 **Note:** Currently the script will install the v1.0.0 stable branch
+
+#### Add new N3IWUE to free5GC
+
+Please, follow the instructions from [this page here](https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue)
 
 ### How to deploy both UERANSIM and N3IWUE
 
