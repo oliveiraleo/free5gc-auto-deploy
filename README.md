@@ -97,11 +97,12 @@ Then install UERANSIM
 
 #### Script parameters
 
-Currently, `deploy-UERANSIM.sh` script accepts three parameters:
+Currently, `deploy-UERANSIM.sh` script accepts four parameters:
 
 - `-stable`: Clones UERANSIM stable version
 - `-nightly33`: Clones UERANSIM nightly version compatible with free5GC v3.3.0 or below
 - `-nightly`: Clones UERANSIM nightly version compatible with free5GC v3.4.0 or above
+- `-keep-hostname`: Disables changing the machine hostname during the deploy
 
 Example usage:
 
@@ -109,7 +110,7 @@ Example usage:
 ./deploy-UERANSIM.sh -nightly
 ```
 
-**Note:** This script requires a parameter to work. Please select one from the list provided above that is compatible with your environment
+**Note:** This script requires a "version related" parameter to work. Please select one from the list provided above that is compatible with your environment
 
 #### Add new 5G UE to free5GC
 
@@ -153,6 +154,18 @@ Then install N3IWUE
 ```
 
 **Note:** Currently the script will install the v1.0.0 stable branch
+
+#### Script parameters
+
+Currently, `deploy-n3iwue.sh` script accepts one parameter:
+
+- `-keep-hostname`: Disables changing the machine hostname during the deploy
+
+Example usage:
+
+```
+./deploy-n3iwue.sh -keep-hostname
+```
 
 #### Add new N3IWUE to free5GC
 
