@@ -171,6 +171,15 @@ Example usage:
 
 Please, follow the instructions from [this page here](https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue)
 
+#### N3IWUE basic usage
+
+To deploy the N3IWUE:
+```
+cd ~/n3iwue
+./run.sh
+
+```
+
 ### How to deploy both UERANSIM and N3IWUE
 
 On a new machine, download the script
