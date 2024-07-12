@@ -12,12 +12,13 @@ fi
 # Control variables (1 = true, 0 = false)
 CONTROL_STABLE=1 # switch between using the free5GC stable branch or latest nightly
 CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
+CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
 # check the number of parameters
-if [ $# -gt 2 ]; then
+if [ $# -gt 3 ]; then
     echo "[ERROR] Too many parameters given! Check your input and try again"
     exit 2
 fi
@@ -33,8 +34,13 @@ if [ $# -ne 0 ]; then
                 CONTROL_N3IWF=1
                 echo "[INFO] N3IWF will be configured during the execution"
                 ;;
-            # TODO add a parameter to control the firewall rule deletion
+            -reset-firewall)
+                CONTROL_FIREWALL_RULES=1
+                echo "[INFO] Firewall rules will be cleaned during the execution"
+                ;;
+            # -only-setup-n3iwf)
             # TODO add a parameter to update the N3IWF configs separately (i.e. without running everything else)
+            # ;;
             *)
                 echo "[ERROR] Some input parameter wasn't found. Check your input and try again"
                 exit 1
@@ -42,6 +48,10 @@ if [ $# -ne 0 ]; then
         esac
         shift
     done
+else
+    echo "[INFO] N3IWF will NOT be configured during the execution"
+    echo "[INFO] Firewall rules will NOT be cleaned during the execution"
+    # TODO check for the control variables state and adjust these info messages accordingly
 fi
 
 echo "[INFO] Execution started"
@@ -85,19 +95,18 @@ read IFACENAME
 echo "[INFO] Using $IFACENAME as interface name"
 
 # warn the user before deleting the rules
-# TODO Add a parameter to trigger this deletion
-echo "[WARN] Firewall reset: ALL iptables rules will be DELETED now"
-read -p "Press ENTER to continue or Ctrl+C to abort now"
-# start to delete old rules
-echo -n "[INFO] Removing all iptables rules, if any... "
-sudo iptables -P INPUT ACCEPT
-sudo iptables -P FORWARD ACCEPT
-sudo iptables -P OUTPUT ACCEPT
-sudo iptables -t nat -F
-sudo iptables -t mangle -F
-sudo iptables -F
-sudo iptables -X
-echo "[OK]"
+if [ $CONTROL_FIREWALL_RULES -eq 1 ]; then
+    # start to delete old rules
+    echo -n "[INFO] Removing all iptables rules, if any... "
+    sudo iptables -P INPUT ACCEPT
+    sudo iptables -P FORWARD ACCEPT
+    sudo iptables -P OUTPUT ACCEPT
+    sudo iptables -t nat -F
+    sudo iptables -t mangle -F
+    sudo iptables -F
+    sudo iptables -X
+    echo "[OK]"
+fi
 echo -n "[INFO] Applying free5GC iptables rules... "
 sudo iptables -t nat -A POSTROUTING -o $IFACENAME -j MASQUERADE
 sudo iptables -A FORWARD -p tcp -m tcp --tcp-flags SYN,RST SYN -j TCPMSS --set-mss 1400

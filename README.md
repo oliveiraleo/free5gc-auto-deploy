@@ -74,10 +74,11 @@ Then install free5gc
 
 #### Script parameters
 
-Currently, `deploy-free5gc.sh` script accepts two parameters:
+Currently, `deploy-free5gc.sh` script accepts three parameters:
 
 - `-nightly`: Clones free5GC nightly version set by FREE5GC_NIGHTLY_COMMIT variable instead of the stable one
 - `-n3iwf`: Prepares the configuration file of the N3IWF during the installation
+- `-reset-firewall`: Removes all the rules from iptables during the installation
 
 Example usage:
 
