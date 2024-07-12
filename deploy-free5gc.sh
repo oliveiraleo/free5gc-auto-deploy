@@ -44,14 +44,6 @@ if [ $# -ne 0 ]; then
     done
 fi
 
-# Give some time for the user to abort before running
-echo "[INFO] The execution will start in 3 seconds!"
-echo -n "3 ... "
-sleep 1
-echo -n "2 ... "
-sleep 1
-echo "1 ..."
-sleep 1
 echo "[INFO] Execution started"
 
 # check your go installation
@@ -71,14 +63,12 @@ sudo apt update && sudo apt upgrade -y
 
 # Install CP supporting packages
 echo "[INFO] Installing DB"
-sleep 2
 sudo apt -y install mongodb wget git
 sudo systemctl start mongodb
 
 
 # Install UPF supporting packages
 echo "[INFO] Installing UPF prerequisites"
-sleep 2
 sudo apt -y install gcc g++ cmake autoconf libtool pkg-config libmnl-dev libyaml-dev
 echo "[INFO] Done"
 
@@ -86,7 +76,6 @@ echo "[INFO] Done"
 # Configure host OS #
 #####################
 echo "[INFO] Configuring host OS"
-sleep 2
 ip a
 echo ""
 echo "Please, enter the 5GC's DN interface name (e.g. the interface that has internet access)"
@@ -126,7 +115,6 @@ echo "[OK]"
 # Install free5GC's CP #
 ########################
 echo "[INFO] Installing the 5GC"
-sleep 3
 if [ $CONTROL_STABLE -eq 1 ]; then
     echo "[INFO] Cloning free5GC stable branch"
     echo "[INFO] Tag/release: $FREE5GC_VERSION"
