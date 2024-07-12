@@ -4,6 +4,10 @@ This repository comprises a collection of scripts designed to facilitate the dep
 
 The comprehensive documentation available on the [project's official website](https://free5gc.org/guide/) is highly advisable for individuals new to free5GC to familiarize themselves with. The underlying processes are to be carefully studied, as the scripts are designed to replicate the steps outlined in the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) guide in an automated manner.
 
+## Notice
+
+The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote access and other for general use), they have been designed considering a environment where the 5GC machine has only one network interface available.
+
 ## Motivation
 
 In the course of my research, I've been utilizing the free5GC project. During the experimentation with this 5G Core (5GC) [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) and its associated Network Functions (NFs), I discovered an opportunity to streamline the installation process. By automating various installation tasks, I significantly reduced deployment time, optimizing efficiency and enabling a more agile research environment.
@@ -114,7 +118,7 @@ Example usage:
 
 #### Add new 5G UE to free5GC
 
-Please, follow the instructions from [this page here](https://free5gc.org/guide/5-install-ueransim/#4-use-webconsole-to-add-an-ue)
+Please, follow the instructions from [this page](https://free5gc.org/guide/5-install-ueransim/#4-use-webconsole-to-add-an-ue)
 
 #### UERANSIM basic usage
 
@@ -169,7 +173,7 @@ Example usage:
 
 #### Add new N3IWUE to free5GC
 
-Please, follow the instructions from [this page here](https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue)
+Please, follow the instructions from [this page](https://free5gc.org/guide/n3iwue-installation/#3-use-webconsole-to-add-ue)
 
 #### N3IWUE basic usage
 
@@ -194,7 +198,7 @@ Then execute it using an interactive shell
 bash -i deploy-both-UEs.sh
 ```
 
-**Note:** By default shells invoked by a script are non-interactive, running this script in a non-interactive shell will cause the bash environment variable reload after Go installation to fail. For more information see [this page](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Interactive-Shells)
+**Note:** By default shells invoked by a script are non-interactive, running this script in a non-interactive shell will cause bash environment reload to fail after Go installation. For more information see [this page](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Interactive-Shells)
 
 ## Contributing
 
