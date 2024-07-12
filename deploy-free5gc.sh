@@ -12,8 +12,9 @@ fi
 # Control variables (1 = true, 0 = false)
 CONTROL_STABLE=1 # switch between using the free5GC stable branch or latest nightly
 CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
-FREE5GC_VERSION=v3.4.1 # select the stable branch tag that will be used by the script
+FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
+GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
 # check the number of parameters
 if [ $# -gt 2 ]; then
@@ -32,6 +33,8 @@ if [ $# -ne 0 ]; then
                 CONTROL_N3IWF=1
                 echo "[INFO] N3IWF will be configured during the execution"
                 ;;
+            # TODO add a parameter to control the firewall rule deletion
+            # TODO add a parameter to update the N3IWF configs separately (i.e. without running everything else)
             *)
                 echo "[ERROR] Some input parameter wasn't found. Check your input and try again"
                 exit 1
@@ -137,12 +140,13 @@ if [ $CONTROL_STABLE -eq 1 ]; then
         echo "[INFO] Downloading reload_host_config script from source"
         curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
     
-    elif [[ $FREE5GC_VERSION = "v3.4.1" ]]; then
-        # v3.4.1
+    elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" ]]; then
+        # v3.4.x
         git clone --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
         cd free5gc
     else
-        echo "[ERROR] Script failed to set FREE5GC_VERSION variable" #check your spelling, you must keep the "v" (e.g. v.3.4.1)
+        echo "[ERROR] Script failed to set FREE5GC_VERSION variable" #check your spelling, you must keep the "v" (e.g. v.3.4.1 and up)
+        exit 1
     fi
 elif [ $CONTROL_STABLE -eq 0 ]; then
     echo "[INFO] Cloning free5GC nightly branch"
@@ -153,6 +157,7 @@ elif [ $CONTROL_STABLE -eq 0 ]; then
     git -c advice.detachedHead=false checkout $FREE5GC_NIGHTLY_COMMIT # commit with the webconsole build and kill script fixes (among other updates)
 else
     echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+    exit 1
 fi
 make # builds all the NFs
 cd ..
@@ -160,10 +165,12 @@ cd ..
 ########################################
 # Install UPF / GTP-U 5G kernel module #
 ########################################
-echo "[INFO] Installing the GTP kernel module"
+echo "[INFO] Configuring the GTP kernel module"
 echo "[INFO] Removing GTP's previous versions, if any"
 rm -rf gtp5g #removes previous versions
-git clone -c advice.detachedHead=false -b v0.8.9 https://github.com/free5gc/gtp5g.git
+echo "[INFO] Installing the GTP kernel module"
+echo "[INFO] Release: $GTP5G_VERSION"
+git clone -c advice.detachedHead=false -b $GTP5G_VERSION https://github.com/free5gc/gtp5g.git
 cd gtp5g
 make
 sudo make install
