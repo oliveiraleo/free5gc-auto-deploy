@@ -12,9 +12,10 @@ echo "[INFO] Execution started"
 
 # Control variables (1 = true, 0 = false)
 CONTROL_HOSTNAME=1 # switch between updating of not the hostname
+CONTROL_VERSION=0 # switch between n3iwue versions (0 = first release, 1 = latest release)
 
 # check the number of parameters
-if [ $# -gt 1 ]; then
+if [ $# -gt 2 ]; then
     echo "[ERROR] Too many parameters given! Check your input and try again"
     exit 2
 fi
@@ -30,6 +31,11 @@ if [ $# -ne 0 ]; then
             -keep-hostname)
                 echo "[INFO] The script will not change the machine's hostname"
                 CONTROL_HOSTNAME=0
+                ;;
+            -latest)
+                echo "[INFO] The script will clone N3IWUE's version compatible with free5GC v3.4.2"
+                CONTROL_VERSION=1
+                ;;
         esac
         shift
     done
@@ -58,7 +64,15 @@ fi
 # Download N3IWUE #
 ###################
 echo "[INFO] Downloading N3IWUE"
-git clone -c advice.detachedHead=false -b v1.0.0 https://github.com/free5gc/n3iwue.git # downloads the stable version
+# echo "[INFO] Tag/release: TODO"
+if [ $CONTROL_VERSION -eq 0 ]; then
+    git clone -c advice.detachedHead=false -b v1.0.0 https://github.com/free5gc/n3iwue.git # downloads the first stable version
+elif [ $CONTROL_VERSION -eq 1 ]; then
+    git clone -c advice.detachedHead=false -b v1.0.1 https://github.com/free5gc/n3iwue.git # downloads the latest stable version
+else
+    echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+    exit 1
+fi
 cd n3iwue
 # TODO add a way to clone the nigthly version too
 
