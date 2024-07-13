@@ -162,14 +162,15 @@ Then install N3IWUE
 
 #### Script parameters
 
-Currently, `deploy-n3iwue.sh` script accepts one parameter:
+Currently, `deploy-n3iwue.sh` script accepts two parameters:
 
 - `-keep-hostname`: Disables changing the machine hostname during the deploy
+- `-latest`: Installs N3IWUE latest version (currently v1.0.1)
 
 Example usage:
 
 ```
-./deploy-n3iwue.sh -keep-hostname
+./deploy-n3iwue.sh -keep-hostname -latest
 ```
 
 #### Add new N3IWUE to free5GC
