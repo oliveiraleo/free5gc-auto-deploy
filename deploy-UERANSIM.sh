@@ -120,7 +120,7 @@ read IP_UE
 CONFIG_FOLDER="./UERANSIM/config/"
 
 # The var below aim to find the correct line to replace the IP address
-GNB_LINE=$(grep -n 'ngapIp: 127.0.0.1' ${CONFIG_FOLDER}free5gc-gnb.yaml | awk -F: '{print $1}' -)
+GNB_LINE=$(grep -n 'ngapIp:' ${CONFIG_FOLDER}free5gc-gnb.yaml | awk -F: '{print $1}' -)
 GNB_LINE_AMF=$(grep -n 'amfConfigs:' ${CONFIG_FOLDER}free5gc-gnb.yaml | awk -F: '{print $1}' -)
 
 # Increment the counter to point to the next line (where the IP is located)

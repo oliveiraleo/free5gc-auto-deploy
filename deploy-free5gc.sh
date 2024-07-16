@@ -13,6 +13,7 @@ fi
 CONTROL_STABLE=1 # switch between using the free5GC stable branch or latest nightly
 CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
 CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
+UBUNTU_VERSION=20 # Ubuntu version where the script is running
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
@@ -71,11 +72,37 @@ sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 free5gc/" /etc/hosts
 echo "[INFO] Updating the package database and installing system updates"
 sudo apt update && sudo apt upgrade -y
 
+# check Ubuntu version
+lsb_release -sr | grep "^22"  >/dev/null 2>&1
+if [[ $? -eq 0 ]]; then
+    echo "[INFO] Ubuntu 22.04 LTS detected. Adjusting the database installation accordingly"
+    UBUNTU_VERSION=22
+elif [[ $? -eq 1 ]]; then
+    echo "[INFO] Ubuntu 20.04 LTS detected, continuing..."
+    UBUNTU_VERSION=20
+else
+    echo "[ERROR] Script failed to set UBUNTU_VERSION variable or a unsuported version is being used"
+    exit 1
+fi
+
 # Install CP supporting packages
 echo "[INFO] Installing DB"
-sudo apt -y install mongodb wget git
-sudo systemctl start mongodb
-
+if [[ $UBUNTU_VERSION -eq 20 ]]; then
+    sudo apt -y install mongodb wget git
+    sudo systemctl start mongodb
+elif [[ $UBUNTU_VERSION -eq 22 ]]; then
+    sudo apt -y install gnupg curl
+    curl -fsSL https://pgp.mongodb.com/server-7.0.asc | \
+       sudo gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor
+    echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
+        sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+    sudo apt update
+    sudo apt install -y mongodb-org
+    sudo systemctl start mongod
+else
+    echo "[ERROR] Script failed to setup the data base"
+    exit 1
+fi
 
 # Install UPF supporting packages
 echo "[INFO] Installing UPF prerequisites"
