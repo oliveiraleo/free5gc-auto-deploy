@@ -30,6 +30,7 @@ The scripts were tested within an environment that possessed the following chara
 
 - Bash shell 5.0.17 (or later)
 - Ubuntu Server 20.04.6
+- Linux Kernel 5.4.x (tested on 5.4.0-189-generic)
 
 ### Hardware (minimum)
 
@@ -49,7 +50,20 @@ For more information see [this FAQ](./FAQ.md#q3-the-minimum-requirements-reporte
 
 ### On free5GC machine:
 
-Download the scripts
+Download the scripts (stable version)
+
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.2.1/install-go.sh
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.2.1/deploy-free5gc.sh
+chmod +x deploy-free5gc.sh install-go.sh # gives execution permission
+```
+
+**Tip:** Swap `main` with the desired version to use other curl commands in this README
+
+**Note:** Check the [releases page](https://github.com/oliveiraleo/free5gc-auto-deploy/releases/) for newer versions or use the [latest stable](https://github.com/oliveiraleo/free5gc-auto-deploy/releases/latest)
+
+
+Download the scripts (nightly version)
 
 ```
 curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/install-go.sh
