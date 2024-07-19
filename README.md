@@ -172,8 +172,6 @@ Then install N3IWUE
 ./deploy-n3iwue.sh
 ```
 
-**Note:** Currently the script will install the v1.0.0 stable branch
-
 #### Script parameters
 
 Currently, `deploy-n3iwue.sh` script accepts two parameters:
