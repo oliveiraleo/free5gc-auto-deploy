@@ -11,7 +11,7 @@ fi
 echo "[INFO] Execution started"
 
 # Control variables (1 = true, 0 = false)
-CONTROL_HOSTNAME=1 # switch between updating of not the hostname
+HOSTNAME_CONTROL=1 # switch between updating of not the hostname
 N3IWUE_VERSION=v1.0.1 # select the stable branch tag that will be used by the script
 N3IWUE_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWUE stable or nightly branch
 N3IWUE_NIGHTLY_COMMIT='' # to be used to select which commit hash will be used by the script
@@ -26,7 +26,6 @@ if [ $# -lt 1 ]; then
     exit 2
 fi
 # check the parameters and set the control vars accordingly
-# NOTE this part was reused because in the future the script may support more parameters
 if [ $# -ne 0 ]; then
     while [ $# -gt 0 ]; do
         case $1 in
@@ -43,8 +42,8 @@ if [ $# -ne 0 ]; then
                 echo "[INFO] The nightly branch of N3IWUE will be cloned"
                 ;;
             -keep-hostname)
+                HOSTNAME_CONTROL=0
                 echo "[INFO] The script will not change the machine's hostname"
-                CONTROL_HOSTNAME=0
                 ;;
         esac
         shift
@@ -58,15 +57,15 @@ echo "[INFO] The message above must not show a \"command not found\" error"
 read -p "Press ENTER to continue or Ctrl+C to abort now"
 
 # Hostname update
-if [ $CONTROL_HOSTNAME -eq 1 ]; then
+if [ $HOSTNAME_CONTROL -eq 1 ]; then
     echo "[INFO] Updating the hostname"
     sudo sed -i "1s/.*/n3iwue/" /etc/hostname
     HOSTS_LINE=$(grep -n '127.0.1.1' /etc/hosts | awk -F: '{print $1}' -)
     sudo sed -i ""$HOSTS_LINE"s/.*/127.0.1.1 n3iwue/" /etc/hosts
-elif [ $CONTROL_HOSTNAME -eq 0 ]; then
+elif [ $HOSTNAME_CONTROL -eq 0 ]; then
     echo "[INFO] Hostname update skipped this time"
 else
-    echo "[ERROR] Script failed to set CONTROL_HOSTNAME variable"
+    echo "[ERROR] Script failed to set HOSTNAME_CONTROL variable"
     exit 1
 fi
 
@@ -89,7 +88,6 @@ else
     echo "[ERROR] Script failed to set N3IWUE_STABLE_BRANCH_CONTROL variable"
     exit 1
 fi
-# TODO add a way to clone the nigthly version too
 
 ##########################
 # Install required tools #
@@ -182,7 +180,7 @@ sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    N3IWF_IPsec_inner_addr=$IP_IPSEC_I
 N3UE_RUN_SCRIPT_IPSEC_LINE=$((N3UE_RUN_SCRIPT_IPSEC_LINE+1)) # go to the next line
 sed -i ""$N3UE_RUN_SCRIPT_IPSEC_LINE"s/.*/    UE_DN_addr=$IP_DN_UE/" ${BASE_FOLDER}run.sh
 
-if [ $CONTROL_HOSTNAME -eq 1 ]; then
+if [ $HOSTNAME_CONTROL -eq 1 ]; then
     echo "[INFO] Reboot the machine to apply the new hostname"
 fi
 echo "[INFO] Don't forget to add the N3IWUE to free5GC via WebConsole"
