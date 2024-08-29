@@ -14,7 +14,7 @@ FREE5GC_STABLE_BRANCH_CONTROL=1 # switch between using the free5GC stable branch
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
 N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
-CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
+FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
@@ -36,7 +36,7 @@ if [ $# -ne 0 ]; then
                 echo "[INFO] N3IWF will be configured during the execution"
                 ;;
             -reset-firewall)
-                CONTROL_FIREWALL_RULES=1
+                FIREWALL_RULES_CONTROL=1
                 echo "[INFO] Firewall rules will be cleaned during the execution"
                 ;;
             # -only-setup-n3iwf)
@@ -122,7 +122,7 @@ read IFACENAME
 echo "[INFO] Using $IFACENAME as interface name"
 
 # warn the user before deleting the rules
-if [ $CONTROL_FIREWALL_RULES -eq 1 ]; then
+if [ $FIREWALL_RULES_CONTROL -eq 1 ]; then
     # start to delete old rules
     echo -n "[INFO] Removing all iptables rules, if any... "
     sudo iptables -P INPUT ACCEPT
