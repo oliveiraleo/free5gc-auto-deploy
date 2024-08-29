@@ -10,12 +10,12 @@ then
 fi
 
 # Control variables (1 = true, 0 = false)
-CONTROL_STABLE=1 # switch between using the free5GC stable branch or latest nightly
-CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
-CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
-UBUNTU_VERSION=20 # Ubuntu version where the script is running
+FREE5GC_STABLE_BRANCH_CONTROL=1 # switch between using the free5GC stable branch or latest nightly
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
+N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
+CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
+UBUNTU_VERSION=20 # Ubuntu version where the script is running
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
 # check the number of parameters
@@ -28,11 +28,11 @@ if [ $# -ne 0 ]; then
     while [ $# -gt 0 ]; do
         case $1 in
             -nightly)
-                CONTROL_STABLE=0
-                echo "[INFO] The nightly branch will be cloned"
+                FREE5GC_STABLE_BRANCH_CONTROL=0
+                echo "[INFO] The nightly branch of free5GC will be cloned"
                 ;;
             -n3iwf)
-                CONTROL_N3IWF=1
+                N3IWF_CONFIGURATION_CONTROL=1
                 echo "[INFO] N3IWF will be configured during the execution"
                 ;;
             -reset-firewall)
@@ -151,7 +151,7 @@ echo "[OK]"
 # Install free5GC's CP #
 ########################
 echo "[INFO] Installing the 5GC"
-if [ $CONTROL_STABLE -eq 1 ]; then
+if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
     echo "[INFO] Cloning free5GC stable branch"
     echo "[INFO] Tag/release: $FREE5GC_VERSION"
     if [[ $FREE5GC_VERSION = "v3.3.0" ]]; then
@@ -172,7 +172,7 @@ if [ $CONTROL_STABLE -eq 1 ]; then
         echo "[ERROR] Script failed to set FREE5GC_VERSION variable" #check your spelling, you must keep the "v" (e.g. v.3.4.1 and up)
         exit 1
     fi
-elif [ $CONTROL_STABLE -eq 0 ]; then
+elif [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 0 ]; then
     echo "[INFO] Cloning free5GC nightly branch"
     echo "[INFO] Commit: $FREE5GC_NIGHTLY_COMMIT"
     echo "[WARN] Unless you know what you are doing, using the nightly branch should be avoided"
@@ -180,7 +180,7 @@ elif [ $CONTROL_STABLE -eq 0 ]; then
     cd free5gc
     git -c advice.detachedHead=false checkout $FREE5GC_NIGHTLY_COMMIT # commit with the webconsole build and kill script fixes (among other updates)
 else
-    echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+    echo "[ERROR] Script failed to set FREE5GC_STABLE_BRANCH_CONTROL variable"
     exit 1
 fi
 make # builds all the NFs
@@ -220,7 +220,7 @@ echo -n "> "
 read IP
 
 # Prepare the N3IWF IPSec inner tunnel IP address
-if [ $CONTROL_N3IWF -eq 1 ]; then
+if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ]; then
     # Get the first octet of the free5GC machine IP
     IP_FIRST_OCTET=${IP%%.*}
     echo "[DEBUG] free5GC machine DN interface IP 1st octet: $IP_FIRST_OCTET"
@@ -262,7 +262,7 @@ sed -i ""$SMF_LINE"s/.*/              - $IP/" ${CONFIG_FOLDER}smfcfg.yaml
 sed -i ""$UPF_LINE"s/.*/    - addr: $IP/" ${CONFIG_FOLDER}upfcfg.yaml
 
 # N3IWF config
-if [ $CONTROL_N3IWF -eq 1 ]; then
+if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ]; then
     N3IWF_LINE=$(grep -n '# --- N2 Interfaces ---' ${CONFIG_FOLDER}n3iwfcfg.yaml | awk -F: '{print $1}' -)
     N3IWF_LINE=$((N3IWF_LINE+3))
     sed -i ""$N3IWF_LINE"s/.*/        -  $IP/" ${CONFIG_FOLDER}n3iwfcfg.yaml
@@ -277,9 +277,9 @@ if [ $CONTROL_N3IWF -eq 1 ]; then
 fi
 
 echo "[INFO] Reboot the machine to apply the new hostname"
-if [ $CONTROL_STABLE -eq 1 ]; then
+if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
     echo "[INFO] Don't forget to configure UERANSIM using the stable flag"
-elif [ $CONTROL_STABLE -eq 0 ]; then
+elif [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 0 ]; then
     echo "[INFO] Don't forget to configure UERANSIM using the nightly flag"
 fi
 echo "[INFO] Auto deploy script done"
