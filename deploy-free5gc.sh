@@ -15,7 +15,7 @@ CONTROL_N3IWF=0 # prepare N3IWF configuration if 1 is set
 CONTROL_FIREWALL_RULES=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
-FREE5GC_NIGHTLY_COMMIT=8bfdd81 # select which commit hash will be used by the script
+FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
 # check the number of parameters
