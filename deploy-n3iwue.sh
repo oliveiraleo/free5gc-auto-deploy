@@ -12,29 +12,39 @@ echo "[INFO] Execution started"
 
 # Control variables (1 = true, 0 = false)
 CONTROL_HOSTNAME=1 # switch between updating of not the hostname
-CONTROL_VERSION=0 # switch between n3iwue versions (0 = first release, 1 = latest release)
+N3IWUE_VERSION=v1.0.1 # select the stable branch tag that will be used by the script
+N3IWUE_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWUE stable or nightly branch
+N3IWUE_NIGHTLY_COMMIT='' # to be used to select which commit hash will be used by the script
 
 # check the number of parameters
 if [ $# -gt 2 ]; then
     echo "[ERROR] Too many parameters given! Check your input and try again"
     exit 2
 fi
-# if [ $# -lt 1 ]; then
-#     echo "[ERROR] No parameter was given! Check your input and try again"
-#     exit 2
-# fi
+if [ $# -lt 1 ]; then
+    echo "[ERROR] No parameter was given! Check your input and try again"
+    exit 2
+fi
 # check the parameters and set the control vars accordingly
 # NOTE this part was reused because in the future the script may support more parameters
 if [ $# -ne 0 ]; then
     while [ $# -gt 0 ]; do
         case $1 in
+            -stable)
+                echo "[INFO] The stable branch of N3IWUE will be cloned"
+                ;;
+            -stable341)
+                N3IWUE_VERSION=v1.0.0
+                echo "[INFO] The script will clone N3IWUE's version compatible with free5GC v3.4.1"
+                ;;
+            -nightly)
+                N3IWUE_STABLE_BRANCH_CONTROL=0
+                N3IWUE_NIGHTLY_COMMIT=c2662c7 # commit with signaling fixes (for more info: https://github.com/free5gc/free5gc/issues/584)
+                echo "[INFO] The nightly branch of N3IWUE will be cloned"
+                ;;
             -keep-hostname)
                 echo "[INFO] The script will not change the machine's hostname"
                 CONTROL_HOSTNAME=0
-                ;;
-            -latest)
-                echo "[INFO] The script will clone N3IWUE's version compatible with free5GC v3.4.2"
-                CONTROL_VERSION=1
                 ;;
         esac
         shift
@@ -64,16 +74,21 @@ fi
 # Download N3IWUE #
 ###################
 echo "[INFO] Downloading N3IWUE"
-# echo "[INFO] Tag/release: TODO"
-if [ $CONTROL_VERSION -eq 0 ]; then
-    git clone -c advice.detachedHead=false -b v1.0.0 https://github.com/free5gc/n3iwue.git # downloads the first stable version
-elif [ $CONTROL_VERSION -eq 1 ]; then
-    git clone -c advice.detachedHead=false -b v1.0.1 https://github.com/free5gc/n3iwue.git # downloads the latest stable version
+if [ $N3IWUE_STABLE_BRANCH_CONTROL -eq 1 ]; then
+    echo "[INFO] Cloning N3IWUE stable branch"
+    echo "[INFO] Tag/release: $N3IWUE_VERSION"
+    git clone -c advice.detachedHead=false -b $N3IWUE_VERSION https://github.com/free5gc/n3iwue.git # clones the stable version
+    cd n3iwue
+elif [ $N3IWUE_STABLE_BRANCH_CONTROL -eq 0 ]; then
+    echo "[INFO] Cloning N3IWUE nightly branch"
+    echo "[INFO] Commit: $N3IWUE_VERSION"
+    git clone https://github.com/free5gc/n3iwue.git # clones the nightly build
+    cd n3iwue
+    git -c advice.detachedHead=false checkout $N3IWUE_NIGHTLY_COMMIT
 else
-    echo "[ERROR] Script failed to set CONTROL_STABLE variable"
+    echo "[ERROR] Script failed to set N3IWUE_STABLE_BRANCH_CONTROL variable"
     exit 1
 fi
-cd n3iwue
 # TODO add a way to clone the nigthly version too
 
 ##########################
