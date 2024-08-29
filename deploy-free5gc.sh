@@ -14,6 +14,8 @@ FREE5GC_STABLE_BRANCH_CONTROL=1 # switch between using the free5GC stable branch
 FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
 N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
+N3IWF_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWF stable or nightly branch
+N3IWF_NIGHTLY_COMMIT=9fe155e # select which commit hash will be used by the script
 FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
@@ -34,6 +36,12 @@ if [ $# -ne 0 ]; then
             -n3iwf)
                 N3IWF_CONFIGURATION_CONTROL=1
                 echo "[INFO] N3IWF will be configured during the execution"
+                ;;
+            -n3iwf-nightly)
+                N3IWF_CONFIGURATION_CONTROL=1
+                N3IWF_STABLE_BRANCH_CONTROL=0
+                echo "[INFO] N3IWF will be configured during the execution"
+                echo "[INFO] The nightly branch of N3IWF will be cloned"
                 ;;
             -reset-firewall)
                 FIREWALL_RULES_CONTROL=1
@@ -183,6 +191,16 @@ else
     echo "[ERROR] Script failed to set FREE5GC_STABLE_BRANCH_CONTROL variable"
     exit 1
 fi
+
+if [ $N3IWF_STABLE_BRANCH_CONTROL -eq 0 ]; then
+    echo "[INFO] Installing N3IWF nightly"
+    echo "[INFO] Cloning N3IWF nightly branch"
+    echo "[INFO] Commit: $N3IWF_NIGHTLY_COMMIT"
+    cd NFs/n3iwf/
+    git -c advice.detachedHead=false checkout $N3IWF_NIGHTLY_COMMIT
+    cd ../../
+fi
+
 make # builds all the NFs
 cd ..
 
