@@ -174,7 +174,7 @@ if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
     
     elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" ]]; then
         # v3.4.x
-        git clone --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
+        git clone -c advice.detachedHead=false --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
         cd free5gc
     else
         echo "[ERROR] Script failed to set FREE5GC_VERSION variable" #check your spelling, you must keep the "v" (e.g. v.3.4.1 and up)
