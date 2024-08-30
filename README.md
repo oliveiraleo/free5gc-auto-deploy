@@ -91,8 +91,9 @@ Then install free5gc
 Currently, `deploy-free5gc.sh` script accepts three parameters:
 
 - `-nightly`: Clones free5GC nightly version set by FREE5GC_NIGHTLY_COMMIT variable instead of the stable one
-- `-n3iwf`: Prepares the configuration file of the N3IWF during the installation
-- `-reset-firewall`: Removes all the rules from iptables during the installation
+- `-n3iwf`: Prepares N3IWF's configuration file during the installation
+- `-n3iwf-nightly`: Prepares N3IWF's configuration file and installs its nightly version
+- `-reset-firewall`: Removes all the rules from iptables and reconfigure them during the installation
 
 Example usage:
 
@@ -176,13 +177,15 @@ Then install N3IWUE
 
 Currently, `deploy-n3iwue.sh` script accepts two parameters:
 
+- `-stable`: Clones N3IWUE stable version
+- `-stable341`: Clones N3IWUE stable version compatible with free5GC v3.4.1
+- `-nightly`: Clones N3IWUE nightly version
 - `-keep-hostname`: Disables changing the machine hostname during the deploy
-- `-latest`: Installs N3IWUE latest version (currently v1.0.1)
 
 Example usage:
 
 ```
-./deploy-n3iwue.sh -keep-hostname -latest
+./deploy-n3iwue.sh -keep-hostname -stable
 ```
 
 #### Add new N3IWUE to free5GC
