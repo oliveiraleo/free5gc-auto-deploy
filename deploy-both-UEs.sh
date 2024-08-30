@@ -24,7 +24,7 @@ echo "[INFO] Deploying UERANSIM"
 echo "[INFO] Installing Go" # interactive shell required for this step
 ./install-go.sh && source ~/.bashrc
 echo "[INFO] Deploying the N3IWUE"
-./deploy-n3iwue.sh -keep-hostname -latest
+./deploy-n3iwue.sh -keep-hostname -stable
 
 # Hostname update
 echo "[INFO] Updating the hostname"
