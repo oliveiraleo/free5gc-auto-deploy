@@ -11,7 +11,7 @@ fi
 
 # Control variables (1 = true, 0 = false)
 FREE5GC_STABLE_BRANCH_CONTROL=1 # switch between using the free5GC stable branch or latest nightly
-FREE5GC_VERSION=v3.4.2 # select the stable branch tag that will be used by the script
+FREE5GC_VERSION=v3.4.3 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
 N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
 N3IWF_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWF stable or nightly branch
@@ -172,7 +172,7 @@ if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
         echo "[INFO] Downloading reload_host_config script from source"
         curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
     
-    elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" ]]; then
+    elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" || $FREE5GC_VERSION = "v3.4.3" ]]; then
         # v3.4.x
         git clone -c advice.detachedHead=false --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
         cd free5gc
