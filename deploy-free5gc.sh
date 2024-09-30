@@ -21,6 +21,8 @@ FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
 
+function ver { printf "%03d%03d%03d" $(echo "$1" | tr '.' ' '); } # util. to compare versions
+
 # check the number of parameters
 if [ $# -gt 3 ]; then
     echo "[ERROR] Too many parameters given! Check your input and try again"
@@ -45,8 +47,23 @@ if [ $# -ne 0 ]; then
                 echo "[INFO] The nightly branch of N3IWF will be cloned"
                 ;;
             -tngf)
-                TNGF_CONFIGURATION_CONTROL=1
-                echo "[INFO] TNGF will be configured during the execution"
+                # verify if the stable version is set to be deployed and if FREE5GC_VERSION >= v3.4.3, else deploy nightly version
+                FREE5GC_VERSION_FLOAT=${FREE5GC_VERSION#?} # stripping leading 'v' to compare only digits
+                if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
+                    if [ $(ver $FREE5GC_VERSION_FLOAT) -gt $(ver 3.4.2) ]; then
+                        TNGF_CONFIGURATION_CONTROL=1
+                        echo "[INFO] TNGF will be configured during the execution"
+                    else
+                        echo "[ERROR] free5GC $FREE5GC_VERSION was selected, however it doesn't contain TNGF"
+                        echo "[INFO] Please, select any version >= v3.4.3 or drop the TNGF parameter"
+                        # TODO Fix the input "./deploy-free5gc.sh -tngf -nightly" (perhaps applying some arg/param sorting?)
+                        echo "[INFO] If using nightly version, please, put the TNGF parameter after the nightly one"
+                        exit 1
+                    fi
+                elif [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 0 ]; then
+                    TNGF_CONFIGURATION_CONTROL=1
+                    echo "[INFO] TNGF will be configured during the execution"
+                fi
                 ;;
             -reset-firewall)
                 FIREWALL_RULES_CONTROL=1
