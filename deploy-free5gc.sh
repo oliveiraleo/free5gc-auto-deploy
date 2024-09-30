@@ -16,6 +16,7 @@ FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the sc
 N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
 N3IWF_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWF stable or nightly branch
 N3IWF_NIGHTLY_COMMIT=9fe155e # select which commit hash will be used by the script
+TNGF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
 FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
 GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
@@ -43,6 +44,10 @@ if [ $# -ne 0 ]; then
                 echo "[INFO] N3IWF will be configured during the execution"
                 echo "[INFO] The nightly branch of N3IWF will be cloned"
                 ;;
+            -tngf)
+                TNGF_CONFIGURATION_CONTROL=1
+                echo "[INFO] TNGF will be configured during the execution"
+                ;;
             -reset-firewall)
                 FIREWALL_RULES_CONTROL=1
                 echo "[INFO] Firewall rules will be cleaned during the execution"
@@ -59,6 +64,7 @@ if [ $# -ne 0 ]; then
     done
 else
     echo "[INFO] N3IWF will NOT be configured during the execution"
+    echo "[INFO] TNGF will NOT be configured during the execution"
     echo "[INFO] Firewall rules will NOT be cleaned during the execution"
     # TODO check for the control variables state and adjust these info messages accordingly
 fi
@@ -238,12 +244,12 @@ echo -n "> "
 read IP
 
 # Prepare the N3IWF IPSec inner tunnel IP address
-if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ]; then
+if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ] || [ $TNGF_CONFIGURATION_CONTROL -eq 1 ]; then
     # Get the first octet of the free5GC machine IP
     IP_FIRST_OCTET=${IP%%.*}
     echo "[DEBUG] free5GC machine DN interface IP 1st octet: $IP_FIRST_OCTET"
 
-    IP_IPSEC_INNER="10.0.0.1" # default IP is 10.0.0.1 (Check it here: https://github.com/free5gc/free5gc/blob/main/config/n3iwfcfg.yaml#L36)
+    IP_IPSEC_INNER="10.0.0.1" # default IP is 10.0.0.1 (Check it here: https://github.com/free5gc/free5gc/blob/main/config/n3iwfcfg.yaml#L36 or https://github.com/free5gc/free5gc/blob/main/config/tngfcfg.yaml#L36)
     IP_IPSEC_INNER_NET_ADDR="10.0.0.0/24"
 
     # If the UE IP belongs to the 10.x.x.x range, it will conflict with the IPSec tunnel address that will be added as the default route
@@ -292,6 +298,26 @@ if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ]; then
     # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
     sed -i ""$N3IWF_LINE"s@.*@  UEIPAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address pool allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}n3iwfcfg.yaml
     echo "[INFO] N3IWF configuration applied"
+fi
+
+# TNGF config
+if [ $TNGF_CONFIGURATION_CONTROL -eq 1 ]; then
+    TNGF_LINE=$(grep -n 'AMFSCTPAddresses:' ${CONFIG_FOLDER}tngfcfg.yaml | awk -F: '{print $1}' -)
+    TNGF_LINE=$((TNGF_LINE+2))
+    sed -i ""$TNGF_LINE"s/.*/        - $IP/" ${CONFIG_FOLDER}tngfcfg.yaml
+    # TNGF_LINE=$(grep -n '# --- Bind Interfaces ---' ${CONFIG_FOLDER}tngfcfg.yaml | awk -F: '{print $1}' -)
+    TNGF_LINE=$((TNGF_LINE+5))
+    sed -i ""$TNGF_LINE"s/.*/  IKEBindAddress: $IP  # IP address of Nwu interface (IKE) on this TNGF/" ${CONFIG_FOLDER}tngfcfg.yaml
+    TNGF_LINE=$((TNGF_LINE+1))
+    sed -i ""$TNGF_LINE"s/.*/  RadiusBindAddress: $IP # IP address of Nwu interface (IKE) on this TNGF/" ${CONFIG_FOLDER}tngfcfg.yaml
+    TNGF_LINE=$((TNGF_LINE+1))
+    sed -i ""$TNGF_LINE"s/.*/  IPSecInterfaceAddress: $IP_IPSEC_INNER # IP address of IPSec virtual interface (IPsec tunnel enpoint on this TNGF)/" ${CONFIG_FOLDER}tngfcfg.yaml
+    TNGF_LINE=$((TNGF_LINE+1))
+    sed -i ""$TNGF_LINE"s/.*/  IPSecTunnelAddress: $IP_IPSEC_INNER # Tunnel IP address of XFRM interface on this TNGF/" ${CONFIG_FOLDER}tngfcfg.yaml
+    TNGF_LINE=$((TNGF_LINE+1))
+    # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
+    sed -i ""$TNGF_LINE"s@.*@  UEIPAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}tngfcfg.yaml
+    echo "[INFO] TNGF configuration applied"
 fi
 
 echo "[INFO] Reboot the machine to apply the new hostname"
