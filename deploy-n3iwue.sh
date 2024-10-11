@@ -38,7 +38,8 @@ if [ $# -ne 0 ]; then
                 ;;
             -nightly)
                 N3IWUE_STABLE_BRANCH_CONTROL=0
-                N3IWUE_NIGHTLY_COMMIT=c2662c7 # commit with signaling fixes (for more info: https://github.com/free5gc/free5gc/issues/584)
+                # N3IWUE_NIGHTLY_COMMIT=c2662c7 # commit with signaling fixes (for more info: https://github.com/free5gc/free5gc/issues/584)
+                N3IWUE_NIGHTLY_COMMIT=578edc9 # latest commit as of (30th sep)
                 echo "[INFO] The nightly branch of N3IWUE will be cloned"
                 ;;
             -keep-hostname)
