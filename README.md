@@ -6,7 +6,7 @@ The comprehensive documentation available on the [project's official website](ht
 
 ## Notice
 
-The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote access and other for general use), they have been designed considering a environment where the 5GC machine has only one network interface available.
+The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote/admin access and other for general use), they have been designed considering an environment where the 5GC machine will use only one network interface as its data network interface. To configure other network interfaces, please, refer to the [free5GC configuration guide](https://free5gc.org/guide/2-config-vm-en/#4-setting-static-ip-address) or to [Ubuntu Server networks docs](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
 
 ## Motivation
 
