@@ -29,8 +29,8 @@ The scripts were tested within an environment that possessed the following chara
 ### Software
 
 - Bash shell 5.0.17 (or later)
-- Ubuntu Server 20.04.6
-- Linux Kernel 5.4.x (tested on 5.4.0-189-generic)
+- Ubuntu Server 20.04.6 LTS
+- Linux Kernel 5.4.x (tested on 5.4.0-200-generic)
 
 ### Hardware (minimum)
 
