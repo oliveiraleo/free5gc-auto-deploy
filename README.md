@@ -93,6 +93,7 @@ Currently, `deploy-free5gc.sh` script accepts three parameters:
 - `-nightly`: Clones free5GC nightly version set by FREE5GC_NIGHTLY_COMMIT variable instead of the stable one
 - `-n3iwf`: Prepares N3IWF's configuration file during the installation
 - `-n3iwf-nightly`: Prepares N3IWF's configuration file and installs its nightly version
+- `-tngf`: Prepares TNGF's configuration file during the installation
 - `-reset-firewall`: Removes all the rules from iptables and reconfigure them during the installation
 
 Example usage:
