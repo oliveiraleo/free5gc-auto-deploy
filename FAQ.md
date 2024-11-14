@@ -10,7 +10,7 @@
 
 ## Q3: The minimum requirements reported by your script are quite lower than the ones on the free5GC's official documentation. Why?
 
-A: The requirements from there (available on [this page](https://free5gc.org/guide/Environment/)) were designed to work in production grade environment where 5G devices would connect, etc. My target environment is a testing one with only a small number of simulated devices connected. Because of that, I've tried to scale down the requirements as much as possible. Anyway, the machine where the scripts will run may be adapted to your preferences.
+A: The requirements from there (available on [this page](https://free5gc.org/guide/Environment/)) were designed to work in a production grade environment where 5G devices would connect, etc. My target environment is a testing one with only a small number of simulated devices connected. Because of that, I've tried to scale down the requirements as much as possible. Anyway, the machine where the scripts will run may be adapted to your preferences, the amount of RAM and CPU power available will affect the time required to build the software (e.g. free5GC NFs, UERANSIM...), the number of connected devices and the general performance of the environment.
 
 ## Q4: Support for Ubuntu 22.04 was added to your tool. Do you recommend using it now?
 
