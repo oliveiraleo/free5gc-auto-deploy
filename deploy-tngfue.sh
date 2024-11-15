@@ -78,26 +78,3 @@ fi
 echo "[INFO] Don't forget to add the TNGFUE to free5GC via WebConsole"
 echo "[INFO] See: https://free5gc.org/guide/TNGF/tngfue-installation/#2-use-webconsole-to-add-ue"
 echo "[INFO] Auto deploy script done"
-
-# Skipping this because the flag CONFIG_EAP_VENDOR_TEST is already enabled 
-# https://github.com/free5gc/tngfue/blob/main/wpa_supplicant/.config#L152
-# cd wpa_supplicant
-# nano .config
-# TODO check if the flag is present, if not, add it to the .config file
-
-# TODO Modify ~/tngfue/wpa_supplicant.conf
-# nano wpa_supplicant.conf
-# TODO download the custom example file
-
-# TODO In tngfue/wpa_supplicant/sec.conf:
-# cd wpa_supplicant
-# nano sec.conf
-
-# make
-
-# TODO try: Delete two interfaces
-# sudo ip l del greTun0
-# sudo ip l del xfrm-1
-# TODO try: Set wifi interface IP to the same LAN with free5GC
-
-# sudo ./wpa_supplicant -c ../wpa_supplicant.conf -i $WLAN_IFACE_NAME
