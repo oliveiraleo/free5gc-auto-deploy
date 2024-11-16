@@ -86,6 +86,21 @@ else
     # TODO check for the control variables state and adjust these info messages accordingly
 fi
 
+# confirm if conflicting NFs (N3IWF and TNGF) will be configured at the same time
+if [[ $N3IWF_CONFIGURATION_CONTROL -eq 1 && $TNGF_CONFIGURATION_CONTROL -eq 1 ]]; then
+    echo "[WARN] Running N3IWF and TNGF at the same time is not yet supported by this tool"
+    read -p "Press ENTER to continue or Ctrl+C to abort now"
+fi
+
+# check for incompatible versions between 5GC and GTP-U module
+GTP5G_VERSION_FLOAT=${GTP5G_VERSION#?} # stripping leading 'v' to compare only digits
+if [[ $FREE5GC_VERSION = "v3.4.4" ]] && [ $(ver $GTP5G_VERSION_FLOAT) -lt $(ver 0.9.3) ]; then
+    echo "[ERROR] Running UPF from free5GC v3.4.4 requires gtp5g v0.9.3 !"
+    echo "[INFO] Please, set GTP5G_VERSION to v0.9.3 or higher"
+    echo "[INFO] Version currently set: $GTP5G_VERSION"
+    exit 3
+fi
+
 echo "[INFO] Execution started"
 
 # check your go installation
