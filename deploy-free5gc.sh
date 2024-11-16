@@ -11,7 +11,7 @@ fi
 
 # Control variables (1 = true, 0 = false)
 FREE5GC_STABLE_BRANCH_CONTROL=1 # switch between using the free5GC stable branch or latest nightly
-FREE5GC_VERSION=v3.4.3 # select the stable branch tag that will be used by the script
+FREE5GC_VERSION=v3.4.4 # select the stable branch tag that will be used by the script
 FREE5GC_NIGHTLY_COMMIT=a39de62 # select which commit hash will be used by the script
 N3IWF_CONFIGURATION_CONTROL=0 # prepare N3IWF configuration if 1 is set
 N3IWF_STABLE_BRANCH_CONTROL=1 # switch between using the N3IWF stable or nightly branch
@@ -19,7 +19,7 @@ N3IWF_NIGHTLY_COMMIT=9fe155e # select which commit hash will be used by the scri
 TNGF_CONFIGURATION_CONTROL=0 # prepare TNGF configuration if 1 is set
 FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
-GTP5G_VERSION=v0.8.10 # select the version tag that will be used to clone the GTP-U module
+GTP5G_VERSION=v0.9.3 # select the version tag that will be used to clone the GTP-U module
 
 function ver { printf "%03d%03d%03d" $(echo "$1" | tr '.' ' '); } # util. to compare versions
 
@@ -195,7 +195,7 @@ if [ $FREE5GC_STABLE_BRANCH_CONTROL -eq 1 ]; then
         echo "[INFO] Downloading reload_host_config script from source"
         curl -LOSs https://raw.githubusercontent.com/free5gc/free5gc/main/reload_host_config.sh
     
-    elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" || $FREE5GC_VERSION = "v3.4.3" ]]; then
+    elif [[ $FREE5GC_VERSION = "v3.4.1" || $FREE5GC_VERSION = "v3.4.2" || $FREE5GC_VERSION = "v3.4.3" || $FREE5GC_VERSION = "v3.4.4" ]]; then
         # v3.4.x
         git clone -c advice.detachedHead=false --recursive -b $FREE5GC_VERSION -j `nproc` https://github.com/free5gc/free5gc.git # clones the stable build
         cd free5gc
@@ -260,7 +260,7 @@ echo "Please, type the 5GC's DN interface IP address" # TODO grab the IP automat
 echo -n "> "
 read IP
 
-# Prepare the N3IWF IPSec inner tunnel IP address
+# Prepare the IPSec inner tunnel IP address for N3IWF or TNGF
 if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ] || [ $TNGF_CONFIGURATION_CONTROL -eq 1 ]; then
     # Get the first octet of the free5GC machine IP
     IP_FIRST_OCTET=${IP%%.*}
@@ -308,13 +308,22 @@ if [ $N3IWF_CONFIGURATION_CONTROL -eq 1 ]; then
     N3IWF_LINE=$((N3IWF_LINE+3))
     sed -i ""$N3IWF_LINE"s/.*/        -  $IP/" ${CONFIG_FOLDER}n3iwfcfg.yaml
     N3IWF_LINE=$((N3IWF_LINE+5))
-    sed -i ""$N3IWF_LINE"s/.*/  IKEBindAddress: $IP # Nwu interface  IP address (IKE) on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
-    N3IWF_LINE=$((N3IWF_LINE+1))
-    sed -i ""$N3IWF_LINE"s/.*/  IPSecTunnelAddress: $IP_IPSEC_INNER # Tunnel IP address of XFRM interface on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
-    N3IWF_LINE=$((N3IWF_LINE+1))
-    # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
-    sed -i ""$N3IWF_LINE"s@.*@  UEIPAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address pool allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}n3iwfcfg.yaml
+    if [[ $FREE5GC_VERSION = "v3.4.4" ]]; then # if new N3IWF version is being used
+        sed -i ""$N3IWF_LINE"s/.*/  ikeBindAddress: $IP # Nwu interface  IP address (IKE) on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+        N3IWF_LINE=$((N3IWF_LINE+1))
+        sed -i ""$N3IWF_LINE"s/.*/  ipSecTunnelAddress: $IP_IPSEC_INNER # Tunnel IP address of XFRM interface on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+        N3IWF_LINE=$((N3IWF_LINE+1))
+        # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
+        sed -i ""$N3IWF_LINE"s@.*@  ueIpAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address pool allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}n3iwfcfg.yaml
+    else # or continue using old writing style
+        sed -i ""$N3IWF_LINE"s/.*/  IKEBindAddress: $IP # Nwu interface  IP address (IKE) on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+        N3IWF_LINE=$((N3IWF_LINE+1))
+        sed -i ""$N3IWF_LINE"s/.*/  IPSecTunnelAddress: $IP_IPSEC_INNER # Tunnel IP address of XFRM interface on this N3IWF/" ${CONFIG_FOLDER}n3iwfcfg.yaml
+        N3IWF_LINE=$((N3IWF_LINE+1))
+        # using @ as the delimiter on the line below as $IP_IPSEC_INNER_NET_ADDR contains a slash that will break sed functionality
+        sed -i ""$N3IWF_LINE"s@.*@  UEIPAddressRange: $IP_IPSEC_INNER_NET_ADDR # IP address pool allocated to UE in IPSec tunnel@" ${CONFIG_FOLDER}n3iwfcfg.yaml
     echo "[INFO] N3IWF configuration applied"
+    fi
 fi
 
 # TNGF config
