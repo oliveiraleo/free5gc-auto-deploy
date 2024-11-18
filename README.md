@@ -88,7 +88,7 @@ Then install free5gc
 
 #### Script parameters
 
-Currently, `deploy-free5gc.sh` script accepts three parameters:
+Currently, `deploy-free5gc.sh` script accepts these parameters:
 
 - `-nightly`: Clones free5GC nightly version set by FREE5GC_NIGHTLY_COMMIT variable instead of the stable one
 - `-n3iwf`: Prepares N3IWF's configuration file during the installation
@@ -118,7 +118,7 @@ Then install UERANSIM
 
 #### Script parameters
 
-Currently, `deploy-UERANSIM.sh` script accepts four parameters:
+Currently, `deploy-UERANSIM.sh` script accepts these parameters:
 
 - `-stable`: Clones UERANSIM stable version
 - `-nightly33`: Clones UERANSIM nightly version compatible with free5GC v3.3.0 or below
@@ -176,7 +176,7 @@ Then install N3IWUE
 
 #### Script parameters
 
-Currently, `deploy-n3iwue.sh` script accepts two parameters:
+Currently, `deploy-n3iwue.sh` script accepts these parameters:
 
 - `-stable`: Clones N3IWUE stable version
 - `-stable341`: Clones N3IWUE stable version compatible with free5GC v3.4.1
