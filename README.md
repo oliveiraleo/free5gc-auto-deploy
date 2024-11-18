@@ -218,6 +218,48 @@ bash -i deploy-both-UEs.sh
 
 **Note:** By default shells invoked by a script are non-interactive, running this script in a non-interactive shell will cause bash environment reload to fail after Go installation. For more information see [this page](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Interactive-Shells)
 
+### On TNGFUE machine:
+
+Download the script TODO
+
+```
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-tngfue.sh
+chmod +x deploy-tngfue.sh # gives execution permission
+```
+
+Then install N3IWUE
+```
+./deploy-tngfue.sh
+```
+
+#### Script parameters
+
+Currently, `deploy-tngfue.sh` script accepts these parameters:
+
+- `-stable`: Clones TNGFUE stable version
+- `-nightly`: Clones TNGFUE nightly version
+- `-keep-hostname`: Disables changing the machine hostname during the deploy
+
+Example usage:
+
+```
+./deploy-n3iwue.sh -nightly -keep-hostname
+```
+
+**Note:** This script requires a "version related" parameter to work. Please select one from the list provided above that is compatible with your environment
+
+#### Add new TNGFUE to free5GC
+
+Please, follow the instructions from [this page](https://free5gc.org/guide/TNGF/tngfue-installation/#2-use-webconsole-to-add-ue)
+
+#### TNGFUE basic usage
+
+To deploy the TNGFUE:
+```
+cd ~/tngfue/
+./run.sh
+```
+
 ## Contributing
 
 The community is encouraged to contribute to this project. If you identify any opportunities for improvement or areas that require updates due to upstream changes, please feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
