@@ -220,14 +220,14 @@ bash -i deploy-both-UEs.sh
 
 ### On TNGFUE machine:
 
-Download the script TODO
+Download the script
 
 ```
 curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/main/deploy-tngfue.sh
 chmod +x deploy-tngfue.sh # gives execution permission
 ```
 
-Then install N3IWUE
+Then install TNGFUE
 ```
 ./deploy-tngfue.sh
 ```
@@ -243,7 +243,7 @@ Currently, `deploy-tngfue.sh` script accepts these parameters:
 Example usage:
 
 ```
-./deploy-n3iwue.sh -nightly -keep-hostname
+./deploy-tngfue.sh -nightly -keep-hostname
 ```
 
 **Note:** This script requires a "version related" parameter to work. Please select one from the list provided above that is compatible with your environment
