@@ -19,7 +19,7 @@ N3IWF_NIGHTLY_COMMIT=9fe155e # select which commit hash will be used by the scri
 TNGF_CONFIGURATION_CONTROL=0 # prepare TNGF configuration if 1 is set
 FIREWALL_RULES_CONTROL=0 # deletes all firewall rules if 1 is set
 UBUNTU_VERSION=20 # Ubuntu version where the script is running
-GTP5G_VERSION=v0.9.3 # select the version tag that will be used to clone the GTP-U module
+GTP5G_VERSION=v0.9.5 # select the version tag that will be used to clone the GTP-U module
 
 function ver { printf "%03d%03d%03d" $(echo "$1" | tr '.' ' '); } # util. to compare versions
 
