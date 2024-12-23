@@ -53,12 +53,12 @@ For more information see [this FAQ](./FAQ.md#q3-the-minimum-requirements-reporte
 Download the scripts (stable version)
 
 ```
-curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.2.1/install-go.sh
-curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.2.1/deploy-free5gc.sh
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.3.0/install-go.sh
+curl -LO https://github.com/oliveiraleo/free5gc-auto-deploy/raw/v1.3.0/deploy-free5gc.sh
 chmod +x deploy-free5gc.sh install-go.sh # gives execution permission
 ```
 
-**Tip:** Swap `main` with the desired version to use other curl commands in this README
+**Tip:** Swap `main` with the desired version while using other curl commands in this README
 
 **Note:** Check the [releases page](https://github.com/oliveiraleo/free5gc-auto-deploy/releases/) for newer versions or use the [latest stable](https://github.com/oliveiraleo/free5gc-auto-deploy/releases/latest)
 
