@@ -41,7 +41,8 @@ if [ $# -ne 0 ]; then
             -nightly)
                 CONTROL_STABLE=0
                 # UERANSIM_NIGHTLY_COMMIT=e4c492d # commit with the new SUPI/IMSI fix (useful to be used with free5GC v3.4.0 or later)
-                UERANSIM_NIGHTLY_COMMIT=2134f6b # commit with the EAP-AKA' fix
+                # UERANSIM_NIGHTLY_COMMIT=2134f6b # commit with the EAP-AKA' fix
+                UERANSIM_NIGHTLY_COMMIT=01e3785 # commit with the Rel-17 ASN and NGAP files
                 echo "[INFO] The nightly branch to be used with free5GC v3.4.0 or later will be cloned"
                 ;;
             -keep-hostname)
