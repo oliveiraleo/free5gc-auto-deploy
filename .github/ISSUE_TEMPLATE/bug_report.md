@@ -1,8 +1,8 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[Bug]"
-labels: ''
+title: "[Bug] "
+labels: bug
 assignees: ''
 
 ---
@@ -35,6 +35,6 @@ Add any other context about the problem here.
 
 ### Contribution possibility
 Do you have the possibility of contributing code with your request (e.g. with a PR)? (Choose one of the options below and delete the others)
-[ ] Yes, I know where to start and I have time to contribute a PR
-[ ] Yes, I know where to start but I don't have time to contribute a PR
-[ ] No, I don't know where to start and I don't have time to contribute a PR
+- [ ] Yes, I know where to start and I have time to contribute a PR
+- [ ] Yes, I know where to start but I don't have time to contribute a PR
+- [ ] No, I don't know where to start and I don't have time to contribute a PR
