@@ -8,6 +8,7 @@ The comprehensive documentation available on the [project's official website](ht
 
 The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote/admin access and other for general use), they have been designed considering an environment where the 5G Core (5GC) machine will use only one network interface as its data network interface. To configure other network interfaces, please, refer to the [free5GC configuration guide](https://free5gc.org/guide/2-config-vm-en/#4-setting-static-ip-address) or to [Ubuntu Server networks docs](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
 
+Note that this project is **not** officially affiliated with free5GC. Its official source code and documentation are available on its [repository](https://github.com/free5gc/free5gc) and [website](https://free5gc.org/).
 
 ## Motivation
 
@@ -266,6 +267,10 @@ cd ~/tngfue/
 The community is encouraged to contribute to this project. If you identify any opportunities for improvement or areas that require updates due to upstream changes, please feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
 
 All contributions to this repository are subject to its [licensing terms](./LICENSE). For more information, please see [here](https://www.gnu.org/licenses/gpl-3.0.en.html) and [here](https://choosealicense.com/licenses/gpl-3.0/).
+
+## Credits
+
+Thanks [free5GC](https://github.com/free5gc/free5gc) and [UERANSIM](https://github.com/aligungr/UERANSIM) creators and contributors for releasing their source code with a permissive license.
 
 ## License
 
