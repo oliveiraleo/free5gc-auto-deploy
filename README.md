@@ -6,11 +6,12 @@ The comprehensive documentation available on the [project's official website](ht
 
 ## Notice
 
-The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote/admin access and other for general use), they have been designed considering an environment where the 5GC machine will use only one network interface as its data network interface. To configure other network interfaces, please, refer to the [free5GC configuration guide](https://free5gc.org/guide/2-config-vm-en/#4-setting-static-ip-address) or to [Ubuntu Server networks docs](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
+The scripts available on this repository have been based on free5GC's [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) instructions. However, instead of having two separate interfaces (one for remote/admin access and other for general use), they have been designed considering an environment where the 5G Core (5GC) machine will use only one network interface as its data network interface. To configure other network interfaces, please, refer to the [free5GC configuration guide](https://free5gc.org/guide/2-config-vm-en/#4-setting-static-ip-address) or to [Ubuntu Server networks docs](https://documentation.ubuntu.com/server/explanation/networking/configuring-networks/)
+
 
 ## Motivation
 
-In the course of my research, I've been utilizing the free5GC project. During the experimentation with this 5G Core (5GC) [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) and its associated Network Functions (NFs), I discovered an opportunity to streamline the installation process. By automating various installation tasks, I significantly reduced deployment time, optimizing efficiency and enabling a more agile research environment.
+In the course of my research, I've been utilizing the free5GC project. During the experimentation with this 5GC [advanced setup](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) and its associated Network Functions (NFs), I discovered an opportunity to streamline the installation process. By automating various installation tasks, I significantly reduced deployment time, optimizing efficiency and enabling a more agile research environment.
 
 During the process of seeking a similar tool, I've found 301 repositories hosted on Github that [had the word "free5gc" on them](https://github.com/search?q=free5gc+created%3A%3C2024-02-21&type=Repositories&ref=advsearch&l=&l=). As I took a deeper look, I noted that:
 - 23 (7.6%) were [related to Kubernetes](https://github.com/search?q=free5gc+k8s+OR+free5gc+microk8s+OR+free5gc+kubernetes+created%3A%3C2024-02-21+&type=repositories&ref=advsearch);
