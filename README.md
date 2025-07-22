@@ -22,7 +22,7 @@ During the process of seeking a similar tool, I've found 301 repositories hosted
 
 However the focus of my scripts were to (semi-)automatically deploy free5GC, and I couldn't find any projects that would fit this purpose.
 
-Entering into the spirit of FSFE's ([FSF](https://www.fsf.org/) Europe) campaign ["Public Money? Public Code!"](https://fsfe.org/activities/publiccode/publiccode.en.html) and given that my research is currently being funded by public administration entities (namely [CAPES](https://www.gov.br/capes) and [RNP](https://www.rnp.br/en)) I decided to share my code with the community as it may help others in the future.
+Entering into the spirit of FSFE's ([FSF](https://www.fsf.org/) Europe) campaign ["Public Money? Public Code!"](https://fsfe.org/activities/publiccode/publiccode.en.html), which includes a chapter in Brazil titled ["Dinheiro Público, Código Público!"](https://softwarelivre.tec.br/campanha-dinheiro-publico-codigo-publico/), and recognizing that my research was partially funded by public administration entities such as [CAPES](https://www.gov.br/capes) and [RNP](https://www.rnp.br/), I have chosen to share my code with the community as it may help others in the future.
 
 ## Requirements
 
