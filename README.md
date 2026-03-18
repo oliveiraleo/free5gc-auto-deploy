@@ -265,6 +265,29 @@ cd ~/tngfue/
 ./run.sh
 ```
 
+## Citing this work
+
+Please, use the following citation:
+
+L. A. De Oliveira, A. L. De Oliveira and E. F. Silva, "Evaluation of EAP Usage for Authenticating Wi-Fi Enterprise Users in 5G Networks," *2025 13th Wireless Days Conference (WD),* Niterói, Rio de Janeiro, Brazil, 2025, pp. 1-5, doi: 10.1109/WD67713.2025.11302618.
+
+Or use the BibTex below:
+
+```
+@INPROCEEDINGS{11302618,
+  author={De Oliveira, Leonardo Azalim and De Oliveira, André Luiz and Silva, Edelberto Franco},
+  booktitle={2025 13th Wireless Days Conference (WD)}, 
+  title={Evaluation of EAP Usage for Authenticating Wi-Fi Enterprise Users in 5G Networks}, 
+  year={2025},
+  volume={},
+  number={},
+  pages={1-5},
+  keywords={Wireless communication;Cellular networks;5G mobile communication;Authentication;Servers;Communication system security;Wireless fidelity;Open source software;Convergence;Testing;5G;simulation;evaluation;authentication},
+  url={https://ieeexplore.ieee.org/abstract/document/11302618},
+  doi={10.1109/WD67713.2025.11302618}
+}
+```
+
 ## Contributing
 
 The community is encouraged to contribute to this project. If you identify any opportunities for improvement or areas that require updates due to upstream changes, please feel free to open an [issue](https://github.com/oliveiraleo/free5gc-auto-deploy/issues) or [pull request](https://github.com/oliveiraleo/free5gc-auto-deploy/pulls)
