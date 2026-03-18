@@ -2,6 +2,9 @@
 
 This repository comprises a collection of scripts designed to facilitate the deployment of instances of the [free5GC](https://github.com/free5gc/free5gc) project.
 
+> [!NOTE] 
+> Since February 20, 2026 ([free5GC v4.2.1 stable](https://github.com/free5gc/free5gc/releases/tag/v4.2.1)), similar functionality is officially available in [free5GC](https://github.com/free5gc/free5gc) through the `quick-setup.sh` script. You may also be interested in its documentation available [here](https://free5gc.org/guide/quick-setup/).
+
 The comprehensive documentation available on the [project's official website](https://free5gc.org/guide/) is highly advisable for individuals new to free5GC to familiarize themselves with. The underlying processes are to be carefully studied, as the scripts are designed to replicate the steps outlined in the ["Build free5GC from scratch"](https://free5gc.org/guide/#advanced-build-free5gc-from-scratch) guide in an automated manner.
 
 ## Notice
